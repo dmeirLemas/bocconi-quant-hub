@@ -1,14 +1,21 @@
-
 import { Link } from 'react-router-dom';
 import { Brain, TrendingUp, BarChart3 } from 'lucide-react';
 
 const Hero = () => {
   return (
     <div className="relative bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-grid-blue-100 opacity-30"></div>
+      {/* Skyscraper Background Image with Tint */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=5760&q=80')`
+        }}
+      ></div>
       
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      {/* Blue Tint Overlay */}
+      <div className="absolute inset-0 bg-blue-600 opacity-80"></div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="text-left lg:pr-8">
