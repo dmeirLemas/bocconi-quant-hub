@@ -13,17 +13,17 @@ const Hero = () => {
       ></div>
       
       {/* Blue Tint Overlay */}
-      <div className="absolute inset-0 bg-blue-600 opacity-80"></div>
+      <div className="absolute inset-0 bg-blue-800 opacity-60"></div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="text-left lg:pr-8">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-blue-300 mb-6 leading-tight">
               Quantitative Finance
-              <span className="block text-blue-600">Meets Innovation</span>
+                <span className="block text-white">Meets Innovation</span>
             </h1>
-            <p className="max-w-2xl text-xl sm:text-2xl text-gray-700 mb-8 leading-relaxed">
+            <p className="max-w-2xl text-xl sm:text-2xl text-gray-800 mb-8 leading-relaxed">
               The first Bocconi student association to integrate quantitative methods with financial markets through cutting-edge coding tools and interdisciplinary research.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -35,7 +35,7 @@ const Hero = () => {
               </Link>
               <Link
                 to="/about"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 text-center"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
               >
                 Learn More
               </Link>

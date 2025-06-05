@@ -4,24 +4,24 @@ import { Users, Target, Trophy, Globe, Brain, TrendingUp, BarChart3 } from 'luci
 const About = () => {
   const teamMembers = [
     {
-      name: "Marco Rossi",
+      name: "Lorenzo Giambra",
       role: "President",
-      description: "MSc Finance, Former Goldman Sachs Intern"
+      description: "BEMACS, 3rd Year"
     },
     {
-      name: "Sofia Chen",
+      name: "Demir Elmas",
       role: "Vice President",
-      description: "MSc Data Science, Bloomberg Research Team"
+      description: "BEMACS, 3rd Year"
     },
     {
-      name: "Alessandro Bianchi",
-      role: "Head of Research",
-      description: "PhD Candidate in Mathematical Finance"
+      name: "Davide Costa",
+      role: "Head of Quant Divsion",
+      description: "BEMACS, 3rd Year"
     },
     {
-      name: "Giulia Martini",
-      role: "Events Coordinator",
-      description: "MSc Economics, Former JPMorgan Analyst"
+      name: "Giacomo Cordella",
+      role: "Head of Digital",
+      description: "BEMACS, 3rd Year"
     }
   ];
 
@@ -111,7 +111,73 @@ const About = () => {
         </div>
       </section>
 
-      {/* Partnership Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-sky-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          Our activities span across major financial centers, connecting Milan with global markets 
+          in London, New York, Hong Kong, and beyond.
+        </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-blue-50 border-l-4 border-blue-600 p-8 rounded-r-lg">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">Virtual Trading Simulations</h3>
+          <p className="text-gray-600 mb-3">
+            Conduct advanced trading competitions backed by quantitative models, simulating real market conditions 
+            across global exchanges from London to Hong Kong.
+          </p>
+          <div className="text-sm text-blue-600 font-medium">Focus: Algorithmic Trading & Strategy Development</div>
+        </div>
+        
+        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-sky-50 border-l-4 border-sky-600 p-8 rounded-r-lg">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">Research Publications</h3>
+          <p className="text-gray-600 mb-3">
+            Publish cutting-edge research in quantitative finance, contributing to academic discourse 
+            and practical applications in financial markets.
+          </p>
+          <div className="text-sm text-sky-600 font-medium">Focus: Academic Excellence & Innovation</div>
+        </div>
+        
+        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-blue-50 border-l-4 border-blue-700 p-8 rounded-r-lg">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">Machine Learning Applications</h3>
+          <p className="text-gray-600 mb-3">
+            Develop AI-powered models for market prediction, risk assessment, and automated decision-making 
+            in capital markets environments.
+          </p>
+          <div className="text-sm text-blue-700 font-medium">Focus: AI/ML Integration in Finance</div>
+        </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Team */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Leadership Team</h2>
+            <p className="text-xl text-gray-600">Meet the passionate students leading our association forward</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-gradient-to-br from-blue-600 to-blue-800 h-32"></div>
+                <div className="p-6 text-center">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-blue-600 font-medium mb-3">{member.role}</p>
+                  <p className="text-gray-600 text-sm">{member.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
+       {/* Partnership Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-sky-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -154,101 +220,6 @@ const About = () => {
                 Work with fintech companies and technology providers to explore the latest tools 
                 and platforms for quantitative analysis and automated trading.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What We Do Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our activities span across major financial centers, connecting Milan with global markets 
-              in London, New York, Hong Kong, and beyond.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-blue-50 border-l-4 border-blue-600 p-8 rounded-r-lg">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Virtual Trading Simulations</h3>
-              <p className="text-gray-600 mb-3">
-                Conduct advanced trading competitions backed by quantitative models, simulating real market conditions 
-                across global exchanges from London to Hong Kong.
-              </p>
-              <div className="text-sm text-blue-600 font-medium">Focus: Algorithmic Trading & Strategy Development</div>
-            </div>
-            
-            <div className="bg-sky-50 border-l-4 border-sky-600 p-8 rounded-r-lg">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Research Publications</h3>
-              <p className="text-gray-600 mb-3">
-                Publish cutting-edge research in quantitative finance, contributing to academic discourse 
-                and practical applications in financial markets.
-              </p>
-              <div className="text-sm text-sky-600 font-medium">Focus: Academic Excellence & Innovation</div>
-            </div>
-            
-            <div className="bg-blue-50 border-l-4 border-blue-700 p-8 rounded-r-lg">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Machine Learning Applications</h3>
-              <p className="text-gray-600 mb-3">
-                Develop AI-powered models for market prediction, risk assessment, and automated decision-making 
-                in capital markets environments.
-              </p>
-              <div className="text-sm text-blue-700 font-medium">Focus: AI/ML Integration in Finance</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership Team */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Leadership Team</h2>
-            <p className="text-xl text-gray-600">Meet the passionate students leading our association forward</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gradient-to-br from-blue-600 to-blue-800 h-32"></div>
-                <div className="p-6 text-center">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-blue-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm">{member.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Achievements */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Achievements</h2>
-            <p className="text-xl text-gray-600">Milestones that showcase our commitment to excellence</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white border-l-4 border-blue-600 p-6 shadow-lg rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Inaugural Research Publication</h3>
-              <p className="text-gray-600 mb-2">First Student-Led Quantitative Study</p>
-              <p className="text-sm text-gray-500">Published groundbreaking research on ML applications in European equity markets</p>
-            </div>
-            
-            <div className="bg-white border-l-4 border-sky-600 p-6 shadow-lg rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Industry Recognition</h3>
-              <p className="text-gray-600 mb-2">Academic Excellence Award</p>
-              <p className="text-sm text-gray-500">Recognized by Bocconi for innovative approach to quantitative finance education</p>
-            </div>
-            
-            <div className="bg-white border-l-4 border-blue-700 p-6 shadow-lg rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Partnership Network</h3>
-              <p className="text-gray-600 mb-2">15+ Industry Collaborations</p>
-              <p className="text-sm text-gray-500">Established partnerships with leading quantitative trading firms and technology providers</p>
             </div>
           </div>
         </div>
