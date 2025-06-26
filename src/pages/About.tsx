@@ -14,6 +14,21 @@ const About = () => {
       description: "BEMACS, 3rd Year"
     },
     {
+      name: "Demir Elmas",
+      role: "Co-Head of ML/AI Division",
+      description: "BEMACS, 3rd Year"
+    },
+    {
+      name: "Apostolos Dedeloudis",
+      role: "Co-Head of ML/AI Division",
+      description: "BEMACS, 3rd Year"
+    },
+    {
+      name: "Andrei Alexandru Sofronie",
+      role: "Co-Head of ML/AI Division",
+      description: "BEMACS, 3rd Year"
+    },
+    {
       name: "Davide Costa",
       role: "Head of Quant Division",
       description: "BEMACS, 3rd Year"
@@ -165,7 +180,7 @@ const About = () => {
             <p className="text-xl text-gray-600">Meet the passionate students leading our association forward</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="bg-gradient-to-br from-brand-primary to-brand-accent h-32"></div>
