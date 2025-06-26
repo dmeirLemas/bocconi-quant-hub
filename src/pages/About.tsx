@@ -9,13 +9,18 @@ const About = () => {
       description: "BEMACS, 3rd Year"
     },
     {
-      name: "Demir Elmas",
+      name: "Andrea Leporati",
       role: "Vice President",
       description: "BEMACS, 3rd Year"
     },
     {
       name: "Davide Costa",
-      role: "Head of Quant Divsion",
+      role: "Head of Quant Division",
+      description: "BEMACS, 3rd Year"
+    },
+    {
+      name: "Massimo Biavardi",
+      role: "Head of Capital Markets",
       description: "BEMACS, 3rd Year"
     },
     {
@@ -26,12 +31,12 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white font-gowun">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-20">
+      <section className="bg-gradient-to-br from-brand-primary to-brand-accent py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-white mb-6">About Our Association</h1>
-          <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+          <h1 className="text-5xl font-bold font-gloock text-white mb-6">About Our Association</h1>
+          <p className="text-xl text-brand-secondary max-w-4xl mx-auto leading-relaxed">
             Bocconi Students Quantitative Finance is the first Bocconi association to conceive quantitative finance 
             in its broadest sense, creating a unique interdisciplinary student community focused on the application 
             of quantitative methods to financial markets through cutting-edge coding tools.
@@ -44,7 +49,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-8">Our Vision & Mission</h2>
+              <h2 className="text-4xl font-bold font-gloock text-brand-primary mb-8">Our Vision & Mission</h2>
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 <p>
                   While Bocconi hosts several finance and tech related associations, none currently emphasize 
@@ -53,7 +58,7 @@ const About = () => {
                 </p>
                 <p>
                   Our association stands out by structuring its activities into three vertical divisions: 
-                  <span className="font-semibold text-blue-600"> AI/ML, Quantitative Research, and Capital Markets</span>, 
+                  <span className="font-semibold text-brand-accent"> AI/ML, Quantitative Research, and Capital Markets</span>, 
                   adopting cutting-edge strategies in backtesting, algorithmic trading, and financial forecasting.
                 </p>
                 <p>
@@ -65,45 +70,45 @@ const About = () => {
               
               <div className="mt-8 grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="bg-blue-100 p-4 rounded-lg mb-2">
-                    <Brain className="h-8 w-8 text-blue-600 mx-auto" />
+                  <div className="bg-brand-secondary p-4 rounded-lg mb-2">
+                    <Brain className="h-8 w-8 text-brand-primary mx-auto" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">AI/ML</span>
+                  <span className="text-sm font-medium text-brand-primary font-gloock">AI/ML</span>
                 </div>
                 <div className="text-center">
-                  <div className="bg-blue-100 p-4 rounded-lg mb-2">
-                    <BarChart3 className="h-8 w-8 text-blue-600 mx-auto" />
+                  <div className="bg-brand-secondary p-4 rounded-lg mb-2">
+                    <BarChart3 className="h-8 w-8 text-brand-primary mx-auto" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">Quant Research</span>
+                  <span className="text-sm font-medium text-brand-primary font-gloock">Quant Research</span>
                 </div>
                 <div className="text-center">
-                  <div className="bg-blue-100 p-4 rounded-lg mb-2">
-                    <TrendingUp className="h-8 w-8 text-blue-600 mx-auto" />
+                  <div className="bg-brand-secondary p-4 rounded-lg mb-2">
+                    <TrendingUp className="h-8 w-8 text-brand-primary mx-auto" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">Capital Markets</span>
+                  <span className="text-sm font-medium text-brand-primary font-gloock">Capital Markets</span>
                 </div>
               </div>
             </div>
             
             <div className="grid grid-cols-2 gap-6">
-              <div className="bg-blue-50 p-6 rounded-lg text-center border border-blue-100">
-                <Target className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="font-semibold text-gray-900 mb-2">Technical Excellence</h3>
+              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
+                <Target className="h-12 w-12 text-brand-primary mx-auto mb-4" />
+                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Technical Excellence</h3>
                 <p className="text-gray-600 text-sm">Focus on hands-on coding and quantitative model development</p>
               </div>
-              <div className="bg-blue-50 p-6 rounded-lg text-center border border-blue-100">
-                <Users className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="font-semibold text-gray-900 mb-2">Community</h3>
+              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
+                <Users className="h-12 w-12 text-brand-primary mx-auto mb-4" />
+                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Community</h3>
                 <p className="text-gray-600 text-sm">Interdisciplinary collaboration between finance and technology</p>
               </div>
-              <div className="bg-blue-50 p-6 rounded-lg text-center border border-blue-100">
-                <Trophy className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="font-semibold text-gray-900 mb-2">Competition</h3>
+              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
+                <Trophy className="h-12 w-12 text-brand-primary mx-auto mb-4" />
+                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Competition</h3>
                 <p className="text-gray-600 text-sm">Virtual trading competitions backed by quantitative models</p>
               </div>
-              <div className="bg-blue-50 p-6 rounded-lg text-center border border-blue-100">
-                <Globe className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="font-semibold text-gray-900 mb-2">Industry Impact</h3>
+              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
+                <Globe className="h-12 w-12 text-brand-primary mx-auto mb-4" />
+                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Industry Impact</h3>
                 <p className="text-gray-600 text-sm">Real-world applications through industry partnerships</p>
               </div>
             </div>
@@ -111,10 +116,10 @@ const About = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-sky-50">
+      <section className="py-20 bg-gradient-to-br from-brand-secondary to-amber-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
+        <h2 className="text-4xl font-bold font-gloock text-brand-primary mb-4">What We Do</h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           Our activities span across major financial centers, connecting Milan with global markets 
           in London, New York, Hong Kong, and beyond.
@@ -122,31 +127,31 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-blue-50 border-l-4 border-blue-600 p-8 rounded-r-lg">
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">Virtual Trading Simulations</h3>
+        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-white border-l-4 border-brand-accent p-8 rounded-r-lg">
+          <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Virtual Trading Simulations</h3>
           <p className="text-gray-600 mb-3">
             Conduct advanced trading competitions backed by quantitative models, simulating real market conditions 
             across global exchanges from London to Hong Kong.
           </p>
-          <div className="text-sm text-blue-600 font-medium">Focus: Algorithmic Trading & Strategy Development</div>
+          <div className="text-sm text-brand-accent font-medium">Focus: Algorithmic Trading & Strategy Development</div>
         </div>
         
-        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-sky-50 border-l-4 border-sky-600 p-8 rounded-r-lg">
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">Research Publications</h3>
+        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-white border-l-4 border-brand-primary p-8 rounded-r-lg">
+          <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Research Publications</h3>
           <p className="text-gray-600 mb-3">
             Publish cutting-edge research in quantitative finance, contributing to academic discourse 
             and practical applications in financial markets.
           </p>
-          <div className="text-sm text-sky-600 font-medium">Focus: Academic Excellence & Innovation</div>
+          <div className="text-sm text-brand-primary font-medium">Focus: Academic Excellence & Innovation</div>
         </div>
         
-        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-blue-50 border-l-4 border-blue-700 p-8 rounded-r-lg">
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">Machine Learning Applications</h3>
+        <div className="cursor-pointer transition transform hover:scale-105 hover:shadow-2xl bg-white border-l-4 border-brand-accent p-8 rounded-r-lg">
+          <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Machine Learning Applications</h3>
           <p className="text-gray-600 mb-3">
             Develop AI-powered models for market prediction, risk assessment, and automated decision-making 
             in capital markets environments.
           </p>
-          <div className="text-sm text-blue-700 font-medium">Focus: AI/ML Integration in Finance</div>
+          <div className="text-sm text-brand-accent font-medium">Focus: AI/ML Integration in Finance</div>
         </div>
           </div>
         </div>
@@ -156,17 +161,17 @@ const About = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Leadership Team</h2>
+            <h2 className="text-4xl font-bold font-gloock text-brand-primary mb-4">Leadership Team</h2>
             <p className="text-xl text-gray-600">Meet the passionate students leading our association forward</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {teamMembers.map((member, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gradient-to-br from-blue-600 to-blue-800 h-32"></div>
+                <div className="bg-gradient-to-br from-brand-primary to-brand-accent h-32"></div>
                 <div className="p-6 text-center">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-blue-600 font-medium mb-3">{member.role}</p>
+                  <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-2">{member.name}</h3>
+                  <p className="text-brand-accent font-medium mb-3">{member.role}</p>
                   <p className="text-gray-600 text-sm">{member.description}</p>
                 </div>
               </div>
@@ -175,13 +180,11 @@ const About = () => {
         </div>
       </section>
 
-
-
        {/* Partnership Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-sky-50">
+      <section className="py-20 bg-gradient-to-br from-brand-secondary to-amber-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">QFA × Industry Partners</h2>
+            <h2 className="text-4xl font-bold font-gloock text-brand-primary mb-4">QFA × Industry Partners</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               We aspire to collaborate with boutiques and financial institutions to comprehend firsthand 
               how quantitative trading models are applied to real-world investment strategies.
@@ -189,33 +192,33 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-blue-100">
-              <div className="bg-blue-600 h-16 w-16 rounded-lg mb-6 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">B</span>
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-brand-accent">
+              <div className="bg-brand-primary h-16 w-16 rounded-lg mb-6 flex items-center justify-center">
+                <span className="text-white font-bold text-xl font-gloock">B</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Boutique Firms</h3>
+              <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Boutique Firms</h3>
               <p className="text-gray-600">
                 Partner with specialized quantitative trading firms to understand cutting-edge strategies 
                 and risk management techniques used in professional environments.
               </p>
             </div>
             
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-blue-100">
-              <div className="bg-sky-600 h-16 w-16 rounded-lg mb-6 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">I</span>
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-brand-accent">
+              <div className="bg-brand-accent h-16 w-16 rounded-lg mb-6 flex items-center justify-center">
+                <span className="text-white font-bold text-xl font-gloock">I</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Investment Banks</h3>
+              <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Investment Banks</h3>
               <p className="text-gray-600">
                 Collaborate with major financial institutions to gain insights into institutional-grade 
                 quantitative models and algorithmic trading platforms.
               </p>
             </div>
             
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-blue-100">
-              <div className="bg-blue-700 h-16 w-16 rounded-lg mb-6 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">T</span>
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-brand-accent">
+              <div className="bg-brand-secondary h-16 w-16 rounded-lg mb-6 flex items-center justify-center">
+                <span className="text-brand-primary font-bold text-xl font-gloock">T</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Tech Companies</h3>
+              <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Tech Companies</h3>
               <p className="text-gray-600">
                 Work with fintech companies and technology providers to explore the latest tools 
                 and platforms for quantitative analysis and automated trading.

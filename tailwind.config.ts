@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom brand colors
+				brand: {
+					primary: '#274A71', // Dark Blue
+					secondary: '#FFDB99', // Gold/Beige
+					accent: '#4673A8', // Light Blue
 				}
+			},
+			fontFamily: {
+				'gloock': ['Gloock', 'serif'],
+				'gowun': ['Gowun Batang', 'serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
