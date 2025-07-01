@@ -7,49 +7,49 @@ const About = () => {
       name: "Lorenzo Giambra",
       role: "President",
       description: "BEMACS, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50.jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50.jpeg"
     },
     {
       name: "Andrea Leporati",
       role: "Vice President",
       description: "BIEM, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (1).jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (1).jpeg"
     },
     {
       name: "Demir Elmas",
       role: "Co-Head of ML/AI Division",
       description: "BEMACS, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.03.53.jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.03.53.jpeg"
     },
     {
       name: "Apostolos Dedeloudis",
       role: "Co-Head of ML/AI Division",
       description: "BEMACS, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (2).jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (2).jpeg"
     },
     {
       name: "Andrei Alexandru Sofronie",
       role: "Co-Head of ML/AI Division",
       description: "BEMACS, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (3).jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (3).jpeg"
     },
     {
       name: "Davide Costa",
       role: "Head of Quant Division",
       description: "BEMACS, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (6).jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (6).jpeg"
     },
     {
       name: "Massimo Biavardi",
       role: "Head of Capital Markets",
       description: "BIEF, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (4).jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (4).jpeg"
     },
     {
       name: "Giacomo Cordella",
       role: "Head of Digital",
       description: "BEMACS, 3rd Year",
-      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (5).jpeg"
+      picture: "lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (5).jpeg"
     }
   ];
 
