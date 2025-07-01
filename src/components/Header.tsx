@@ -10,7 +10,7 @@ const Header = () => {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about' },
-    { name: 'Apply', href: '/apply' },
+    // { name: 'Apply', href: '/apply' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -25,7 +25,7 @@ const Header = () => {
           <img 
             src="/lovable-uploads/6a9961c2-824e-4823-840b-77d534b9c6fa.png" 
             alt="BSQF Logo" 
-            className="h-16 w-auto"
+            className="h-32 w-auto"
           />
         </div>
         </Link>

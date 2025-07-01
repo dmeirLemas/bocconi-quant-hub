@@ -16,11 +16,19 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><a href="/" className="text-brand-secondary hover:text-white transition-colors">Home</a></li>
               <li><a href="https://bocconistudentsquantitativefinance.com/about" className="text-brand-secondary hover:text-white transition-colors">About Us</a></li>
-              <li><a href="https://bocconistudentsquantitativefinance.com/apply" className="text-brand-secondary hover:text-white transition-colors">Apply</a></li>
+              {/* <li><a href="https://bocconistudentsquantitativefinance.com/apply" className="text-brand-secondary hover:text-white transition-colors">Apply</a></li> */}
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-semibold font-gloock mb-4">Follow Us</h3>
+            <div className="space-y-3">
+              <a href="https://www.instagram.com/bocconistream" target="_blank" rel="noopener noreferrer" className="flex items-center text-brand-secondary hover:text-white transition-colors">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7.75 2A5.757 5.757 0 002 7.75v8.5A5.757 5.757 0 007.75 22h8.5A5.757 5.757 0 0022 16.25v-8.5A5.757 5.757 0 0016.25 2h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm4.5-2a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/>
+                </svg>
+                <span className="ml-2">Instagram</span>
+              </a>
+            </div>
             <div className="space-y-3">
               <a href="https://www.linkedin.com/company/bocconi-students-quantitative-finance/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="flex items-center text-brand-secondary hover:text-white transition-colors">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

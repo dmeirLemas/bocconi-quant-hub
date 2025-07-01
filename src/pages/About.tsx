@@ -6,42 +6,50 @@ const About = () => {
     {
       name: "Lorenzo Giambra",
       role: "President",
-      description: "BEMACS, 3rd Year"
+      description: "BEMACS, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50.jpeg"
     },
     {
       name: "Andrea Leporati",
       role: "Vice President",
-      description: "BEMACS, 3rd Year"
+      description: "BIEM, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (1).jpeg"
     },
     {
       name: "Demir Elmas",
       role: "Co-Head of ML/AI Division",
-      description: "BEMACS, 3rd Year"
+      description: "BEMACS, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.03.53.jpeg"
     },
     {
       name: "Apostolos Dedeloudis",
       role: "Co-Head of ML/AI Division",
-      description: "BEMACS, 3rd Year"
+      description: "BEMACS, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (2).jpeg"
     },
     {
       name: "Andrei Alexandru Sofronie",
       role: "Co-Head of ML/AI Division",
-      description: "BEMACS, 3rd Year"
+      description: "BEMACS, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (3).jpeg"
     },
     {
       name: "Davide Costa",
       role: "Head of Quant Division",
-      description: "BEMACS, 3rd Year"
+      description: "BEMACS, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (6).jpeg"
     },
     {
       name: "Massimo Biavardi",
       role: "Head of Capital Markets",
-      description: "BEMACS, 3rd Year"
+      description: "BIEF, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (4).jpeg"
     },
     {
       name: "Giacomo Cordella",
       role: "Head of Digital",
-      description: "BEMACS, 3rd Year"
+      description: "BEMACS, 3rd Year",
+      picture: "public/lovable-uploads/WhatsApp Image 2025-06-30 at 21.02.50 (5).jpeg"
     }
   ];
 
@@ -136,8 +144,7 @@ const About = () => {
           <div className="text-center mb-16">
         <h2 className="text-4xl font-bold font-gloock text-brand-primary mb-4">What We Do</h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Our activities span across major financial centers, connecting Milan with global markets 
-          in London, New York, Hong Kong, and beyond.
+          Our activities span across major financial centers, connecting Milan with global markets.
         </p>
           </div>
           
@@ -183,7 +190,7 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gradient-to-br from-brand-primary to-brand-accent h-32"></div>
+                <img src={member.picture} alt={member.name} className="object-cover h-32 mx-auto" />
                 <div className="p-6 text-center">
                   <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-2">{member.name}</h3>
                   <p className="text-brand-accent font-medium mb-3">{member.role}</p>
