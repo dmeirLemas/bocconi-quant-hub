@@ -20,33 +20,33 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center bg-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Code className="h-8 w-8 text-blue-600" />
+            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
+              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Code className="h-8 w-8 text-brand-accent" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Technical Focus</h3>
               <p className="text-gray-600">Hands-on coding with Python, R, and advanced quantitative tools</p>
             </div>
             
-            <div className="text-center bg-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="h-8 w-8 text-blue-600" />
+            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
+              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="h-8 w-8 text-brand-accent" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Virtual Trading</h3>
               <p className="text-gray-600">Quantitative model-backed trading competitions and simulations</p>
             </div>
             
-            <div className="text-center bg-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="h-8 w-8 text-blue-600" />
+            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
+              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="h-8 w-8 text-brand-accent" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Research Publications</h3>
               <p className="text-gray-600">Contribute to cutting-edge research in quantitative finance</p>
             </div>
             
-            <div className="text-center bg-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-blue-600" />
+            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
+              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-brand-accent" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Industry Collaboration</h3>
               <p className="text-gray-600">Direct partnerships with boutiques and financial institutions</p>
@@ -128,8 +128,8 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-sky-50 p-8 rounded-xl border border-blue-100">
-              <Calendar className="h-12 w-12 text-blue-600 mb-4" />
+            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
+              <Calendar className="h-12 w-12 text-brand-accent mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Virtual Trading Competitions</h3>
               <p className="text-gray-600">
                 Participate in quantitative model-backed trading simulations that test your ability to apply 
@@ -137,8 +137,8 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-blue-50 to-sky-50 p-8 rounded-xl border border-blue-100">
-              <Briefcase className="h-12 w-12 text-blue-600 mb-4" />
+            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
+              <Briefcase className="h-12 w-12 text-brand-accent mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Industry Workshops</h3>
               <p className="text-gray-600">
                 Learn from professionals at boutique firms and financial institutions about real-world 
@@ -146,8 +146,8 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-blue-50 to-sky-50 p-8 rounded-xl border border-blue-100">
-              <BookOpen className="h-12 w-12 text-blue-600 mb-4" />
+            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
+              <BookOpen className="h-12 w-12 text-brand-accent mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Research Projects</h3>
               <p className="text-gray-600">
                 Contribute to research publications and develop your own quantitative models with guidance 
@@ -155,8 +155,8 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-blue-50 to-sky-50 p-8 rounded-xl border border-blue-100">
-              <Award className="h-12 w-12 text-blue-600 mb-4" />
+            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
+              <Award className="h-12 w-12 text-brand-accent mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Career Preparation</h3>
               <p className="text-gray-600">
                 Build a strong foundation for careers in quantitative finance through practical experience 

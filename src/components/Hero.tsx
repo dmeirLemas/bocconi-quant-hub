@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Brain, TrendingUp, BarChart3 } from 'lucide-react';
+import { Brain, TrendingUp, BarChart3, Briefcase, MessageSquare } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -28,12 +28,14 @@ const Hero = () => {
               The first Bocconi student association to integrate quantitative methods with financial markets through cutting-edge coding tools and interdisciplinary research.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link
-                to="/apply"
+              <a
+                href="https://forms.google.com/placeholder"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-brand-accent hover:bg-brand-primary text-white font-semibold font-gowun px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
               >
                 Join Our Community
-              </Link>
+              </a>
               <Link
                 to="/about"
                 className="bg-brand-secondary hover:bg-amber-400 text-brand-primary font-semibold font-gowun px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
@@ -42,22 +44,39 @@ const Hero = () => {
               </Link>
             </div>
 
-            {/* Three Divisions */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                <Brain className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">AI/ML</h3>
-                <p className="text-gray-600 font-gowun text-sm">Machine learning applications in capital markets</p>
+            {/* Five Divisions */}
+            <div className="flex flex-col lg:flex-row gap-6 items-center">
+              {/* 2x2 Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1">
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
+                  <Brain className="mx-auto h-10 w-10 text-brand-accent mb-3" />
+                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">AI/ML</h3>
+                  <p className="text-gray-600 font-gowun text-sm">Machine learning applications in capital markets</p>
+                </div>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
+                  <BarChart3 className="mx-auto h-10 w-10 text-brand-accent mb-3" />
+                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Quantitative Research</h3>
+                  <p className="text-gray-600 font-gowun text-sm">Research publications and backtesting strategies</p>
+                </div>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
+                  <TrendingUp className="mx-auto h-10 w-10 text-brand-accent mb-3" />
+                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Capital Markets</h3>
+                  <p className="text-gray-600 font-gowun text-sm">Algorithmic trading and financial forecasting</p>
+                </div>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
+                  <Briefcase className="mx-auto h-10 w-10 text-brand-accent mb-3" />
+                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Portfolio Management</h3>
+                  <p className="text-gray-600 font-gowun text-sm">Strategic asset allocation and risk management</p>
+                </div>
               </div>
-              <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                <BarChart3 className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Quantitative Research</h3>
-                <p className="text-gray-600 font-gowun text-sm">Research publications and backtesting strategies</p>
-              </div>
-              <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                <TrendingUp className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Capital Markets</h3>
-                <p className="text-gray-600 font-gowun text-sm">Algorithmic trading and financial forecasting</p>
+              
+              {/* Communications - Centered to the side */}
+              <div className="flex justify-center lg:w-auto">
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm w-full sm:w-64">
+                  <MessageSquare className="mx-auto h-10 w-10 text-brand-accent mb-3" />
+                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Communications</h3>
+                  <p className="text-gray-600 font-gowun text-sm">Content creation and community engagement</p>
+                </div>
               </div>
             </div>
           </div>

@@ -10,7 +10,6 @@ const Header = () => {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about' },
-    // { name: 'Apply', href: '/apply' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -45,6 +44,14 @@ const Header = () => {
           {item.name}
           </Link>
         ))}
+        <a
+          href="https://forms.google.com/placeholder"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-brand-accent hover:bg-brand-secondary text-white hover:text-brand-primary font-semibold font-gowun px-6 py-2 rounded-lg transition-all duration-200 shadow"
+        >
+          Apply
+        </a>
         </div>
 
         {/* Mobile menu button */}
@@ -76,6 +83,15 @@ const Header = () => {
             {item.name}
           </Link>
           ))}
+          <a
+            href="https://forms.google.com/placeholder"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block px-3 py-2 rounded-md text-lg font-medium font-gowun bg-brand-primary text-white hover:bg-brand-secondary hover:text-brand-primary transition-colors duration-200"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Apply
+          </a>
         </div>
         </div>
       )}
