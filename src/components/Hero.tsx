@@ -9,7 +9,7 @@ const Hero = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=5760&q=80')`
+          backgroundImage: `url('/lovable-uploads/da6baa84-0ef8-4b72-949a-14544c161c04.png')`
         }}
       ></div>
       
@@ -45,37 +45,37 @@ const Hero = () => {
             </div>
 
             {/* Five Divisions */}
-            <div className="flex flex-col lg:flex-row gap-6 items-center">
+            <div className="flex flex-col lg:flex-row gap-8 items-center">
               {/* 2x2 Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1">
-                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                  <Brain className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">AI/ML</h3>
-                  <p className="text-gray-600 font-gowun text-sm">Machine learning applications in capital markets</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1 max-w-4xl">
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm">
+                  <Brain className="mx-auto h-12 w-12 text-brand-accent mb-4" />
+                  <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">AI/ML</h3>
+                  <p className="text-gray-600 font-gowun">Machine learning applications in capital markets</p>
                 </div>
-                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                  <BarChart3 className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Quantitative Research</h3>
-                  <p className="text-gray-600 font-gowun text-sm">Research publications and backtesting strategies</p>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm">
+                  <BarChart3 className="mx-auto h-12 w-12 text-brand-accent mb-4" />
+                  <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Quantitative Research</h3>
+                  <p className="text-gray-600 font-gowun">Research publications and backtesting strategies</p>
                 </div>
-                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                  <TrendingUp className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Capital Markets</h3>
-                  <p className="text-gray-600 font-gowun text-sm">Algorithmic trading and financial forecasting</p>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm">
+                  <TrendingUp className="mx-auto h-12 w-12 text-brand-accent mb-4" />
+                  <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Capital Markets</h3>
+                  <p className="text-gray-600 font-gowun">Algorithmic trading and financial forecasting</p>
                 </div>
-                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm">
-                  <Briefcase className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Portfolio Management</h3>
-                  <p className="text-gray-600 font-gowun text-sm">Strategic asset allocation and risk management</p>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm">
+                  <Briefcase className="mx-auto h-12 w-12 text-brand-accent mb-4" />
+                  <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Portfolio Management</h3>
+                  <p className="text-gray-600 font-gowun">Strategic asset allocation and risk management</p>
                 </div>
               </div>
               
               {/* Communications - Centered to the side */}
               <div className="flex justify-center lg:w-auto">
-                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 border border-brand-secondary shadow-sm w-full sm:w-64">
-                  <MessageSquare className="mx-auto h-10 w-10 text-brand-accent mb-3" />
-                  <h3 className="text-lg font-semibold font-gloock text-brand-primary mb-2">Communications</h3>
-                  <p className="text-gray-600 font-gowun text-sm">Content creation and community engagement</p>
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm w-full sm:w-72">
+                  <MessageSquare className="mx-auto h-12 w-12 text-brand-accent mb-4" />
+                  <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Communications</h3>
+                  <p className="text-gray-600 font-gowun">Content creation and community engagement</p>
                 </div>
               </div>
             </div>

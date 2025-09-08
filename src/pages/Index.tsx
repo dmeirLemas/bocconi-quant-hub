@@ -20,36 +20,36 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
-              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Code className="h-8 w-8 text-brand-accent" />
+            <div className="text-center bg-brand-primary p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent">
+              <div className="bg-brand-accent w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Code className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Technical Focus</h3>
-              <p className="text-gray-600">Hands-on coding with Python, R, and advanced quantitative tools</p>
+              <h3 className="text-xl font-semibold text-white mb-2">Technical Focus</h3>
+              <p className="text-brand-secondary">Hands-on coding with Python, R, and advanced quantitative tools</p>
             </div>
             
-            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
-              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="h-8 w-8 text-brand-accent" />
+            <div className="text-center bg-brand-primary p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent">
+              <div className="bg-brand-accent w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Virtual Trading</h3>
-              <p className="text-gray-600">Quantitative model-backed trading competitions and simulations</p>
+              <h3 className="text-xl font-semibold text-white mb-2">Virtual Trading</h3>
+              <p className="text-brand-secondary">Quantitative model-backed trading competitions and simulations</p>
             </div>
             
-            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
-              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="h-8 w-8 text-brand-accent" />
+            <div className="text-center bg-brand-primary p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent">
+              <div className="bg-brand-accent w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Research Publications</h3>
-              <p className="text-gray-600">Contribute to cutting-edge research in quantitative finance</p>
+              <h3 className="text-xl font-semibold text-white mb-2">Research Publications</h3>
+              <p className="text-brand-secondary">Contribute to cutting-edge research in quantitative finance</p>
             </div>
             
-            <div className="text-center bg-brand-primary/10 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent/20">
-              <div className="bg-brand-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-brand-accent" />
+            <div className="text-center bg-brand-primary p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-accent">
+              <div className="bg-brand-accent w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Industry Collaboration</h3>
-              <p className="text-gray-600">Direct partnerships with boutiques and financial institutions</p>
+              <h3 className="text-xl font-semibold text-white mb-2">Industry Collaboration</h3>
+              <p className="text-brand-secondary">Direct partnerships with boutiques and financial institutions</p>
             </div>
           </div>
         </div>
@@ -128,37 +128,37 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
-              <Calendar className="h-12 w-12 text-brand-accent mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Virtual Trading Competitions</h3>
-              <p className="text-gray-600">
+            <div className="bg-brand-primary p-8 rounded-xl border border-brand-accent shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Calendar className="h-12 w-12 text-brand-secondary mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-3">Virtual Trading Competitions</h3>
+              <p className="text-brand-secondary">
                 Participate in quantitative model-backed trading simulations that test your ability to apply 
                 theoretical knowledge to real market scenarios.
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
-              <Briefcase className="h-12 w-12 text-brand-accent mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Industry Workshops</h3>
-              <p className="text-gray-600">
+            <div className="bg-brand-primary p-8 rounded-xl border border-brand-accent shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Briefcase className="h-12 w-12 text-brand-secondary mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-3">Industry Workshops</h3>
+              <p className="text-brand-secondary">
                 Learn from professionals at boutique firms and financial institutions about real-world 
                 applications of quantitative trading models.
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
-              <BookOpen className="h-12 w-12 text-brand-accent mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Research Projects</h3>
-              <p className="text-gray-600">
+            <div className="bg-brand-primary p-8 rounded-xl border border-brand-accent shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <BookOpen className="h-12 w-12 text-brand-secondary mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-3">Research Projects</h3>
+              <p className="text-brand-secondary">
                 Contribute to research publications and develop your own quantitative models with guidance 
                 from experienced members and faculty.
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 p-8 rounded-xl border border-brand-accent/20">
-              <Award className="h-12 w-12 text-brand-accent mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Career Preparation</h3>
-              <p className="text-gray-600">
+            <div className="bg-brand-primary p-8 rounded-xl border border-brand-accent shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Award className="h-12 w-12 text-brand-secondary mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-3">Career Preparation</h3>
+              <p className="text-brand-secondary">
                 Build a strong foundation for careers in quantitative finance through practical experience 
                 and industry connections.
               </p>
