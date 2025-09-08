@@ -17,17 +17,17 @@ const Hero = () => {
       <div className="absolute inset-0 bg-brand-primary opacity-70"></div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="text-left lg:pr-8">
+        <div className="text-center lg:text-left">
+          {/* Main Content */}
+          <div className="mb-16">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-gloock text-brand-secondary mb-6 leading-tight">
               Quantitative Finance
                 <span className="block text-white">Meets Innovation</span>
             </h1>
-            <p className="max-w-2xl text-xl sm:text-2xl font-gowun text-gray-200 mb-8 leading-relaxed">
+            <p className="max-w-2xl mx-auto lg:mx-0 text-xl sm:text-2xl font-gowun text-gray-200 mb-8 leading-relaxed">
               The first Bocconi student association to integrate quantitative methods with financial markets through cutting-edge coding tools and interdisciplinary research.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center lg:justify-start">
               <a
                 href="https://forms.google.com/placeholder"
                 target="_blank"
@@ -45,9 +45,9 @@ const Hero = () => {
             </div>
 
             {/* Five Divisions */}
-            <div className="flex flex-col lg:flex-row gap-8 items-center">
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
               {/* 2x2 Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1 max-w-4xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1">
                 <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm">
                   <Brain className="mx-auto h-12 w-12 text-brand-accent mb-4" />
                   <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">AI/ML</h3>
@@ -70,59 +70,12 @@ const Hero = () => {
                 </div>
               </div>
               
-              {/* Communications - Centered to the side */}
-              <div className="flex justify-center lg:w-auto">
-                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm w-full sm:w-72">
+              {/* Communications - Side positioned */}
+              <div className="flex justify-center lg:justify-start lg:mt-12">
+                <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm w-full max-w-sm">
                   <MessageSquare className="mx-auto h-12 w-12 text-brand-accent mb-4" />
                   <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Communications</h3>
                   <p className="text-gray-600 font-gowun">Content creation and community engagement</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Content - Central Skyscraper Image */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative">
-              <div className="w-80 h-96 bg-gradient-to-t from-brand-primary via-brand-accent to-brand-secondary rounded-lg shadow-2xl relative overflow-hidden">
-                {/* Skyscraper silhouette effect */}
-                <div className="absolute bottom-0 left-0 right-0 h-3/4 bg-gradient-to-t from-gray-900 via-gray-800 to-transparent opacity-80"></div>
-                
-                {/* Building windows effect */}
-                <div className="absolute inset-0 grid grid-cols-8 gap-1 p-4">
-                  {Array.from({ length: 64 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className={`bg-yellow-200 opacity-${Math.random() > 0.6 ? '80' : '20'} rounded-sm`}
-                    ></div>
-                  ))}
-                </div>
-
-                {/* City skyline accent */}
-                <div className="absolute bottom-0 left-0 right-0 h-1/3">
-                  <div className="flex items-end justify-center space-x-1 h-full px-4">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="bg-gray-800 opacity-70"
-                        style={{
-                          height: `${30 + Math.random() * 40}%`,
-                          width: '8px'
-                        }}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute top-8 right-8 bg-brand-accent text-white px-3 py-1 rounded-full text-xs font-semibold font-gowun">
-                  Milan
-                </div>
-                <div className="absolute top-20 left-8 bg-brand-secondary text-brand-primary px-3 py-1 rounded-full text-xs font-semibold font-gowun">
-                  London
-                </div>
-                <div className="absolute bottom-32 right-6 bg-brand-primary text-white px-3 py-1 rounded-full text-xs font-semibold font-gowun">
-                  NYC
                 </div>
               </div>
             </div>
