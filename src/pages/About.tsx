@@ -1,5 +1,5 @@
 
-import { Users, Target, Trophy, Globe, Brain, TrendingUp, BarChart3 } from 'lucide-react';
+import { Users, Target, Trophy, Globe, Brain, TrendingUp, BarChart3, Briefcase } from 'lucide-react';
 
 const About = () => {
   const teamMembers = [
@@ -80,9 +80,9 @@ const About = () => {
                   econometrics, and artificial intelligence.
                 </p>
                 <p>
-                  Our association stands out by structuring its activities into three vertical divisions: 
-                  <span className="font-semibold text-brand-accent"> AI/ML, Quantitative Research, and Capital Markets</span>, 
-                  adopting cutting-edge strategies in backtesting, algorithmic trading, and financial forecasting.
+                  Our association stands out by structuring its activities into four vertical divisions: 
+                  <span className="font-semibold text-brand-accent"> AI/ML, Quantitative Research, Capital Markets, and Portfolio Management</span>, 
+                  adopting cutting-edge strategies in backtesting, algorithmic trading, financial forecasting, and strategic asset allocation.
                 </p>
                 <p>
                   We translate quantitative and qualitative financial skills into hands-on experience, 
@@ -91,7 +91,7 @@ const About = () => {
                 </p>
               </div>
               
-              <div className="mt-8 grid grid-cols-3 gap-4">
+              <div className="mt-8 grid grid-cols-4 gap-4">
                 <div className="text-center">
                   <div className="bg-brand-secondary p-4 rounded-lg mb-2">
                     <Brain className="h-8 w-8 text-brand-primary mx-auto" />
@@ -110,29 +110,43 @@ const About = () => {
                   </div>
                   <span className="text-sm font-medium text-brand-primary font-gloock">Capital Markets</span>
                 </div>
+                <div className="text-center">
+                  <div className="bg-brand-secondary p-4 rounded-lg mb-2">
+                    <Briefcase className="h-8 w-8 text-brand-primary mx-auto" />
+                  </div>
+                  <span className="text-sm font-medium text-brand-primary font-gloock">Portfolio Management</span>
+                </div>
               </div>
             </div>
             
             <div className="grid grid-cols-2 gap-6">
-              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
-                <Target className="h-12 w-12 text-brand-primary mx-auto mb-4" />
-                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Technical Excellence</h3>
-                <p className="text-gray-600 text-sm">Focus on hands-on coding and quantitative model development</p>
+              <div className="bg-brand-primary p-6 rounded-lg text-center border border-brand-accent">
+                <div className="bg-brand-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-semibold font-gloock text-white mb-2">Technical Excellence</h3>
+                <p className="text-brand-secondary text-sm">Focus on hands-on coding and quantitative model development</p>
               </div>
-              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
-                <Users className="h-12 w-12 text-brand-primary mx-auto mb-4" />
-                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Community</h3>
-                <p className="text-gray-600 text-sm">Interdisciplinary collaboration between finance and technology</p>
+              <div className="bg-brand-primary p-6 rounded-lg text-center border border-brand-accent">
+                <div className="bg-brand-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-semibold font-gloock text-white mb-2">Community</h3>
+                <p className="text-brand-secondary text-sm">Interdisciplinary collaboration between finance and technology</p>
               </div>
-              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
-                <Trophy className="h-12 w-12 text-brand-primary mx-auto mb-4" />
-                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Competition</h3>
-                <p className="text-gray-600 text-sm">Virtual trading competitions backed by quantitative models</p>
+              <div className="bg-brand-primary p-6 rounded-lg text-center border border-brand-accent">
+                <div className="bg-brand-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Trophy className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-semibold font-gloock text-white mb-2">Competition</h3>
+                <p className="text-brand-secondary text-sm">Virtual trading competitions backed by quantitative models</p>
               </div>
-              <div className="bg-brand-secondary p-6 rounded-lg text-center border border-brand-accent">
-                <Globe className="h-12 w-12 text-brand-primary mx-auto mb-4" />
-                <h3 className="font-semibold font-gloock text-brand-primary mb-2">Industry Impact</h3>
-                <p className="text-gray-600 text-sm">Real-world applications through industry partnerships</p>
+              <div className="bg-brand-primary p-6 rounded-lg text-center border border-brand-accent">
+                <div className="bg-brand-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Globe className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-semibold font-gloock text-white mb-2">Industry Impact</h3>
+                <p className="text-brand-secondary text-sm">Real-world applications through industry partnerships</p>
               </div>
             </div>
           </div>

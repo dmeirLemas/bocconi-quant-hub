@@ -59,13 +59,13 @@ const Index = () => {
       <section className="py-20 bg-gradient-to-br from-blue-50 to-sky-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Three Vertical Divisions</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Four Vertical Divisions</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our activities are structured into specialized divisions, each focusing on different aspects of quantitative finance
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
                 <TrendingUp className="h-8 w-8 text-white" />
@@ -109,8 +109,23 @@ const Index = () => {
               </p>
               <ul className="text-sm text-gray-500 space-y-2">
                 <li>• High-frequency trading strategies</li>
-                <li>• Portfolio optimization</li>
+                <li>• Market microstructure analysis</li>
                 <li>• Derivatives pricing models</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
+              <div className="bg-gradient-to-br from-green-500 to-green-600 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Briefcase className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Portfolio Management</h3>
+              <p className="text-gray-600 mb-4">
+                Design and manage investment portfolios by combining financial theory, quantitative methods, and risk management tools to optimize returns while controlling exposure to market uncertainties.
+              </p>
+              <ul className="text-sm text-gray-500 space-y-2">
+                <li>• Asset allocation strategies across equities, fixed income, and alternatives</li>
+                <li>• Risk-adjusted performance measurement</li>
+                <li>• Dynamic rebalancing and factor-based portfolio construction</li>
               </ul>
             </div>
           </div>
