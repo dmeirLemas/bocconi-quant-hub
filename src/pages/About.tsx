@@ -42,7 +42,7 @@ const About = () => {
     {
       name: "Alessandro Marazzi",
       role: "Co-Head of Quant Research",
-      description: "BEMACS, 3rd Year",
+      description: "CLEF, 3rd Year",
       picture: "lovable-uploads/0b3d45be-86c2-4ee8-a1ed-c04a939c3fda.png"
     },
     {
@@ -54,19 +54,19 @@ const About = () => {
     {
       name: "Carlo Iannazzo",
       role: "Co-Head of Capital Markets",
-      description: "BIEF, 3rd Year",
+      description: "CLEF, 3rd Year",
       picture: "lovable-uploads/80288696-86f5-46da-91cf-fe453dd8ca4d.png"
     },
     {
       name: "Pietro Gualco",
       role: "Head of Portfolio Management",
-      description: "BEMACS, 3rd Year",
+      description: "CLEF, 3rd Year",
       picture: "lovable-uploads/e36517d9-1b7b-4d6d-8303-1458bc622347.png"
     },
     {
       name: "Alberto Pace",
       role: "Head of Communications",
-      description: "BEMACS, 3rd Year",
+      description: "CLEF, 3rd Year",
       picture: "lovable-uploads/96a9fa97-82e8-4f5d-a17b-af97fb56078f.png"
     },
     {
@@ -78,7 +78,7 @@ const About = () => {
     {
       name: "Riccardo Mancini",
       role: "Head of Operations",
-      description: "BEMACS, 3rd Year",
+      description: "BIEM, 3rd Year",
       picture: "lovable-uploads/3017db47-ec55-489c-b8bb-b015cf45e1e0.png"
     }
   ];
