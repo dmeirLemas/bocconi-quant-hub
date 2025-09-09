@@ -45,7 +45,7 @@ const Header = () => {
           </Link>
         ))}
         <a
-          href="https://forms.google.com/placeholder"
+          href="https://docs.google.com/forms/d/e/1FAIpQLScWvrCy3SdDtJuMCow2eCqWgmUmr5jYjrvhZtD3ov60mi38CQ/viewform?usp=sharing&ouid=108960923037342736970"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-brand-accent hover:bg-brand-secondary text-white hover:text-brand-primary font-semibold font-gowun px-6 py-2 rounded-lg transition-all duration-200 shadow"
@@ -84,7 +84,7 @@ const Header = () => {
           </Link>
           ))}
           <a
-            href="https://forms.google.com/placeholder"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScWvrCy3SdDtJuMCow2eCqWgmUmr5jYjrvhZtD3ov60mi38CQ/viewform?usp=sharing&ouid=108960923037342736970"
             target="_blank"
             rel="noopener noreferrer"
             className="block px-3 py-2 rounded-md text-lg font-medium font-gowun bg-brand-primary text-white hover:bg-brand-secondary hover:text-brand-primary transition-colors duration-200"
