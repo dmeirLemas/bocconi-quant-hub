@@ -45,9 +45,9 @@ const Hero = () => {
             </div>
 
             {/* Five Divisions */}
-            <div className="flex flex-col lg:flex-row gap-8 items-start">
-              {/* 2x2 Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1">
+            <div className="flex flex-col items-center gap-8">
+              {/* Top Row - 2x2 Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
                 <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm">
                   <Brain className="mx-auto h-12 w-12 text-brand-accent mb-4" />
                   <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">AI/ML</h3>
@@ -70,8 +70,8 @@ const Hero = () => {
                 </div>
               </div>
               
-              {/* Communications - Side positioned */}
-              <div className="flex justify-center lg:justify-start lg:mt-12">
+              {/* Communications - Centered below */}
+              <div className="flex justify-center">
                 <div className="text-center bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-8 border border-brand-secondary shadow-sm w-full max-w-sm">
                   <MessageSquare className="mx-auto h-12 w-12 text-brand-accent mb-4" />
                   <h3 className="text-xl font-semibold font-gloock text-brand-primary mb-3">Communications</h3>

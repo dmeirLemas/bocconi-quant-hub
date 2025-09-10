@@ -9,7 +9,7 @@ const Footer = () => {
             <p className="text-brand-secondary mb-2">Università Bocconi</p>
             <p className="text-brand-secondary mb-2">Via Sarfatti, 25</p>
             <p className="text-brand-secondary mb-2">20136 Milano, Italy</p>
-            <p className="text-brand-secondary">quantfinance@bocconi.it</p>
+            <p className="text-brand-secondary">as.statistics@unibocconi.it</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold font-gloock mb-4">Quick Links</h3>
