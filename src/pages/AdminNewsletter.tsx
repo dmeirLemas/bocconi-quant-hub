@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { Upload } from "lucide-react";
 
 const newsletterSchema = z.object({
   title: z.string().trim().min(1, { message: "Title is required" }).max(200),
-  content: z.string().trim().min(1, { message: "Content is required" }).max(10000),
+  content: z.string().trim().min(1, { message: "Content is required" }),
   author: z.string().trim().min(1, { message: "Author is required" }).max(100)
 });
 
@@ -25,6 +27,94 @@ const AdminNewsletter = () => {
   const [author, setAuthor] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const quillRef = useRef<ReactQuill>(null);
+
+  const imageHandler = async () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      try {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError, data } = await supabase.storage
+          .from("newsletter-images")
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from("newsletter-images")
+          .getPublicUrl(filePath);
+
+        const quill = quillRef.current?.getEditor();
+        if (quill) {
+          const range = quill.getSelection();
+          quill.insertEmbed(range?.index || 0, "image", publicUrl);
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to upload image",
+          variant: "destructive",
+        });
+      }
+    };
+  };
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ font: [] }],
+          [{ size: ["small", false, "large", "huge"] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ color: [] }, { background: [] }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ align: [] }],
+          ["link", "image", "video"],
+          ["blockquote", "code-block"],
+          ["clean"],
+        ],
+        handlers: {
+          image: imageHandler,
+        },
+      },
+    }),
+    []
+  );
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "color",
+    "background",
+    "script",
+    "list",
+    "bullet",
+    "indent",
+    "align",
+    "link",
+    "image",
+    "video",
+    "blockquote",
+    "code-block",
+  ];
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -172,15 +262,15 @@ const AdminNewsletter = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="content">Content</Label>
-                <Textarea
-                  id="content"
+                <ReactQuill
+                  ref={quillRef}
+                  theme="snow"
                   value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Newsletter content"
-                  required
-                  rows={15}
-                  maxLength={10000}
-                  className="resize-none"
+                  onChange={setContent}
+                  modules={modules}
+                  formats={formats}
+                  className="bg-white"
+                  style={{ height: "400px", marginBottom: "50px" }}
                 />
               </div>
 
