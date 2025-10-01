@@ -10,6 +10,9 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Application from "./pages/Application";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import AdminNewsletter from "./pages/AdminNewsletter";
+import Newsletters from "./pages/Newsletters";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +29,9 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/apply" element={<Application />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin/newsletter" element={<AdminNewsletter />} />
+              <Route path="/newsletters" element={<Newsletters />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
