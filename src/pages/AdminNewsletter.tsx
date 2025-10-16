@@ -25,12 +25,9 @@ const AdminNewsletter = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
-  const [category, setCategory] = useState("Capital Markets");
   const navigate = useNavigate();
   const { toast } = useToast();
   const quillRef = useRef<ReactQuill>(null);
-
-  const categories = ["Capital Markets"];
 
   const imageHandler = async () => {
     const input = document.createElement("input");
@@ -169,20 +166,12 @@ const AdminNewsletter = () => {
       const validated = newsletterSchema.parse({ title, content, author });
       setSubmitting(true);
 
-      // Generate slug from title
-      const slug = validated.title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-');
-
       const { error } = await supabase
         .from("newsletters")
         .insert([{
           title: validated.title,
           content: validated.content,
-          author: validated.author,
-          category,
-          slug
+          author: validated.author
         }]);
 
       if (error) throw error;
@@ -195,7 +184,6 @@ const AdminNewsletter = () => {
       setTitle("");
       setContent("");
       setAuthor("");
-      setCategory("Capital Markets");
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -270,23 +258,6 @@ const AdminNewsletter = () => {
                   required
                   maxLength={100}
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
-                <select
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2 border border-input bg-background rounded-md"
-                  required
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
               </div>
 
               <div className="space-y-2">

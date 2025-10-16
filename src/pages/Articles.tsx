@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -10,32 +10,19 @@ interface Newsletter {
   content: string;
   author: string;
   published_date: string;
-  slug: string;
-  category: string;
 }
 
 const Articles = () => {
   const navigate = useNavigate();
-  const { category } = useParams();
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const categoryName = category?.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ') || 'All Articles';
-
   useEffect(() => {
     const fetchNewsletters = async () => {
-      let query = supabase
+      const { data, error } = await supabase
         .from("newsletters")
         .select("*")
         .order("published_date", { ascending: false });
-      
-      if (category) {
-        query = query.eq("category", categoryName);
-      }
-      
-      const { data, error } = await query;
 
       if (error) {
         console.error("Error fetching articles:", error);
@@ -46,7 +33,7 @@ const Articles = () => {
     };
 
     fetchNewsletters();
-  }, [category, categoryName]);
+  }, []);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -66,7 +53,7 @@ const Articles = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl font-gloock text-brand-primary mb-4 text-center">{categoryName}</h1>
+        <h1 className="text-5xl font-gloock text-brand-primary mb-4 text-center">Articles</h1>
         <p className="text-lg text-brand-text text-center mb-12">
           Stay updated with our latest insights and announcements
         </p>
@@ -87,7 +74,7 @@ const Articles = () => {
               <Card 
                 key={newsletter.id} 
                 className="border border-border cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => navigate(`/articles/${newsletter.slug}`)}
+                onClick={() => navigate(`/articles/${newsletter.id}`)}
               >
                 <CardHeader>
                   <CardTitle className="text-3xl font-gloock text-brand-primary mb-3">
