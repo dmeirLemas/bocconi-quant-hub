@@ -17,28 +17,34 @@ export type Database = {
       newsletters: {
         Row: {
           author: string
+          category: string
           content: string
           created_at: string
           id: string
           published_date: string
+          slug: string
           title: string
           updated_at: string
         }
         Insert: {
           author: string
+          category?: string
           content: string
           created_at?: string
           id?: string
           published_date?: string
+          slug: string
           title: string
           updated_at?: string
         }
         Update: {
           author?: string
+          category?: string
           content?: string
           created_at?: string
           id?: string
           published_date?: string
+          slug?: string
           title?: string
           updated_at?: string
         }

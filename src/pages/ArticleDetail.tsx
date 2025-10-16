@@ -23,10 +23,12 @@ interface Newsletter {
   content: string;
   author: string;
   published_date: string;
+  slug: string;
+  category: string;
 }
 
 const ArticleDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState<Newsletter | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,12 +52,12 @@ const ArticleDetail = () => {
     };
 
     const fetchArticle = async () => {
-      if (!id) return;
+      if (!slug) return;
       
       const { data, error } = await supabase
         .from("newsletters")
         .select("*")
-        .eq("id", id)
+        .eq("slug", slug)
         .maybeSingle();
 
       if (error) {
@@ -80,7 +82,7 @@ const ArticleDetail = () => {
 
     checkAdmin();
     fetchArticle();
-  }, [id, navigate, toast]);
+  }, [slug, navigate, toast]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -91,12 +93,12 @@ const ArticleDetail = () => {
   };
 
   const handleDelete = async () => {
-    if (!id) return;
+    if (!article?.id) return;
 
     const { error } = await supabase
       .from("newsletters")
       .delete()
-      .eq("id", id);
+      .eq("id", article.id);
 
     if (error) {
       toast({
@@ -140,7 +142,7 @@ const ArticleDetail = () => {
           Back to Articles
         </Button>
 
-        <Card className="border border-border">
+        <Card>
           <CardHeader>
             <div className="flex justify-between items-start">
               <div className="flex-1">
