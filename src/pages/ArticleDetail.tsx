@@ -140,14 +140,14 @@ const ArticleDetail = () => {
           Back to Articles
         </Button>
 
-        <Card className="border border-brand-secondary">
+        <Card className="border border-border">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <CardTitle className="text-4xl font-gloock text-brand-primary mb-4">
                   {article.title}
                 </CardTitle>
-                <div className="flex items-center gap-4 text-sm text-brand-secondary">
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <span>By {article.author}</span>
                   <Separator orientation="vertical" className="h-4" />
                   <span>{formatDate(article.published_date)}</span>

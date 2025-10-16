@@ -69,25 +69,25 @@ const Articles = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-6">
             {newsletters.map((newsletter) => (
               <Card 
                 key={newsletter.id} 
-                className="border border-brand-secondary cursor-pointer hover:shadow-lg transition-shadow"
+                className="border border-border cursor-pointer hover:shadow-lg transition-shadow"
                 onClick={() => navigate(`/articles/${newsletter.id}`)}
               >
                 <CardHeader>
-                  <CardTitle className="text-2xl font-gloock text-brand-primary mb-2 line-clamp-2">
+                  <CardTitle className="text-3xl font-gloock text-brand-primary mb-3">
                     {newsletter.title}
                   </CardTitle>
-                  <div className="flex items-center gap-2 text-xs text-brand-secondary">
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <span>{newsletter.author}</span>
-                    <Separator orientation="vertical" className="h-3" />
+                    <Separator orientation="vertical" className="h-4" />
                     <span>{formatDate(newsletter.published_date)}</span>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-brand-text text-sm line-clamp-3">
+                  <p className="text-brand-text line-clamp-3">
                     {getPreview(newsletter.content)}
                   </p>
                 </CardContent>
