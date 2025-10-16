@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
 
 interface Newsletter {
   id: string;
@@ -17,9 +19,26 @@ const Articles = () => {
   const navigate = useNavigate();
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const fetchNewsletters = async () => {
+    const fetchData = async () => {
+      // Check if user is admin
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+
+        if (roleData) {
+          setIsAdmin(true);
+        }
+      }
+
+      // Fetch newsletters
       const { data, error } = await supabase
         .from("newsletters")
         .select("*")
@@ -33,7 +52,7 @@ const Articles = () => {
       setLoading(false);
     };
 
-    fetchNewsletters();
+    fetchData();
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -74,12 +93,14 @@ const Articles = () => {
             {newsletters.map((newsletter) => (
               <Card 
                 key={newsletter.id} 
-                className="border-none cursor-pointer hover:shadow-lg transition-shadow overflow-hidden"
-                onClick={() => navigate(`/articles/${newsletter.id}`)}
+                className="border-none hover:shadow-lg transition-shadow overflow-hidden"
               >
                 <div className="flex gap-6">
                   {newsletter.thumbnail_url && (
-                    <div className="w-48 h-48 flex-shrink-0">
+                    <div 
+                      className="w-48 h-48 flex-shrink-0 cursor-pointer"
+                      onClick={() => navigate(`/articles/${newsletter.id}`)}
+                    >
                       <img 
                         src={newsletter.thumbnail_url} 
                         alt={newsletter.title}
@@ -87,7 +108,10 @@ const Articles = () => {
                       />
                     </div>
                   )}
-                  <div className="flex-1">
+                  <div 
+                    className="flex-1 cursor-pointer"
+                    onClick={() => navigate(`/articles/${newsletter.id}`)}
+                  >
                     <CardHeader>
                       <CardTitle className="text-3xl font-gloock text-brand-primary mb-3">
                         {newsletter.title}
@@ -104,6 +128,20 @@ const Articles = () => {
                       </p>
                     </CardContent>
                   </div>
+                  {isAdmin && (
+                    <div className="flex items-start p-6">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/admin/newsletter/edit/${newsletter.id}`);
+                        }}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Card>
             ))}
