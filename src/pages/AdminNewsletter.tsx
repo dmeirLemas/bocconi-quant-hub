@@ -25,6 +25,8 @@ const AdminNewsletter = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
   const navigate = useNavigate();
   const { toast } = useToast();
   const quillRef = useRef<ReactQuill>(null);
@@ -159,6 +161,25 @@ const AdminNewsletter = () => {
     return () => subscription.unsubscribe();
   }, [navigate, toast]);
 
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnailPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -166,12 +187,37 @@ const AdminNewsletter = () => {
       const validated = newsletterSchema.parse({ title, content, author });
       setSubmitting(true);
 
+      let thumbnailUrl = "";
+
+      // Upload thumbnail if provided
+      if (thumbnail) {
+        const fileExt = thumbnail.name.split(".").pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("newsletter-images")
+          .upload(filePath, thumbnail);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from("newsletter-images")
+          .getPublicUrl(filePath);
+
+        thumbnailUrl = publicUrl;
+      }
+
+      const slug = generateSlug(validated.title);
+
       const { error } = await supabase
         .from("newsletters")
         .insert([{
           title: validated.title,
           content: validated.content,
-          author: validated.author
+          author: validated.author,
+          slug: slug,
+          thumbnail_url: thumbnailUrl || null,
         }]);
 
       if (error) throw error;
@@ -184,6 +230,8 @@ const AdminNewsletter = () => {
       setTitle("");
       setContent("");
       setAuthor("");
+      setThumbnail(null);
+      setThumbnailPreview("");
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -258,6 +306,25 @@ const AdminNewsletter = () => {
                   required
                   maxLength={100}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="thumbnail">Article Thumbnail</Label>
+                <Input
+                  id="thumbnail"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleThumbnailChange}
+                />
+                {thumbnailPreview && (
+                  <div className="mt-2">
+                    <img 
+                      src={thumbnailPreview} 
+                      alt="Thumbnail preview" 
+                      className="max-w-xs rounded-lg"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">

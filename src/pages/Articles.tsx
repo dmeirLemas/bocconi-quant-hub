@@ -10,6 +10,7 @@ interface Newsletter {
   content: string;
   author: string;
   published_date: string;
+  thumbnail_url: string | null;
 }
 
 const Articles = () => {
@@ -73,24 +74,37 @@ const Articles = () => {
             {newsletters.map((newsletter) => (
               <Card 
                 key={newsletter.id} 
-                className="border border-border cursor-pointer hover:shadow-lg transition-shadow"
+                className="border-none cursor-pointer hover:shadow-lg transition-shadow overflow-hidden"
                 onClick={() => navigate(`/articles/${newsletter.id}`)}
               >
-                <CardHeader>
-                  <CardTitle className="text-3xl font-gloock text-brand-primary mb-3">
-                    {newsletter.title}
-                  </CardTitle>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <span>{newsletter.author}</span>
-                    <Separator orientation="vertical" className="h-4" />
-                    <span>{formatDate(newsletter.published_date)}</span>
+                <div className="flex gap-6">
+                  {newsletter.thumbnail_url && (
+                    <div className="w-48 h-48 flex-shrink-0">
+                      <img 
+                        src={newsletter.thumbnail_url} 
+                        alt={newsletter.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <CardHeader>
+                      <CardTitle className="text-3xl font-gloock text-brand-primary mb-3">
+                        {newsletter.title}
+                      </CardTitle>
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <span>{newsletter.author}</span>
+                        <Separator orientation="vertical" className="h-4" />
+                        <span>{formatDate(newsletter.published_date)}</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-brand-text line-clamp-3">
+                        {getPreview(newsletter.content)}
+                      </p>
+                    </CardContent>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-brand-text line-clamp-3">
-                    {getPreview(newsletter.content)}
-                  </p>
-                </CardContent>
+                </div>
               </Card>
             ))}
           </div>
