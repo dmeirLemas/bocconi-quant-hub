@@ -95,10 +95,10 @@ const Articles = () => {
                 key={newsletter.id} 
                 className="border-none hover:shadow-lg transition-shadow overflow-hidden"
               >
-                <div className="flex gap-6">
+                <div className="flex flex-col md:flex-row gap-6">
                   {newsletter.thumbnail_url && (
                     <div 
-                      className="w-48 h-48 flex-shrink-0 cursor-pointer"
+                      className="w-full h-48 md:w-48 md:h-48 flex-shrink-0 cursor-pointer"
                       onClick={() => navigate(`/articles/${newsletter.id}`)}
                     >
                       <img 
