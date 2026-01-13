@@ -1,15 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { Upload, FileText, Eye } from "lucide-react";
+import { FileText, Eye, Code, ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -21,19 +19,51 @@ const articleSchema = z.object({
   author: z.string().trim().min(1, { message: "Author is required" }).max(100)
 });
 
+const LATEX_TEMPLATE = `# Introduction
+
+Write your introduction here. You can use **bold**, *italic*, and other Markdown formatting.
+
+## Mathematical Equations
+
+Inline equations use single dollar signs: $E = mc^2$
+
+Block equations use double dollar signs:
+
+$$
+\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}
+$$
+
+### More Examples
+
+The quadratic formula:
+$$
+x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}
+$$
+
+Euler's identity: $e^{i\\pi} + 1 = 0$
+
+## Methodology
+
+Describe your methodology here...
+
+## Results
+
+Present your findings...
+
+## Conclusion
+
+Summarize your conclusions...
+`;
+
 const AdminArticle = () => {
-  const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [parsing, setParsing] = useState(false);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(LATEX_TEMPLATE);
   const [author, setAuthor] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
-  const [activeTab, setActiveTab] = useState("write");
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -45,8 +75,6 @@ const AdminArticle = () => {
         navigate("/auth");
         return;
       }
-
-      setUser(session.user);
 
       const { data: roleData } = await supabase
         .from("user_roles")
@@ -92,92 +120,6 @@ const AdminArticle = () => {
     }
   };
 
-  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const allowedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'text/plain',
-      'text/markdown'
-    ];
-
-    if (!allowedTypes.includes(file.type) && !file.name.endsWith('.md')) {
-      toast({
-        title: "Invalid file type",
-        description: "Please upload a PDF, Word document, or text file",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setParsing(true);
-
-    try {
-      // Upload file to storage for processing
-      const fileExt = file.name.split(".").pop();
-      const fileName = `temp_${Date.now()}.${fileExt}`;
-      
-      const { error: uploadError, data: uploadData } = await supabase.storage
-        .from("article-images")
-        .upload(`documents/${fileName}`, file);
-
-      if (uploadError) throw uploadError;
-
-      // Call edge function to parse the document
-      const { data: { publicUrl } } = supabase.storage
-        .from("article-images")
-        .getPublicUrl(`documents/${fileName}`);
-
-      const { data, error } = await supabase.functions.invoke('parse-document', {
-        body: { 
-          fileUrl: publicUrl,
-          fileName: file.name,
-          fileType: file.type
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.content) {
-        setContent(data.content);
-        if (data.title) setTitle(data.title);
-        if (data.images && data.images.length > 0) {
-          // Images are already uploaded and URLs are in the content
-          toast({
-            title: "Document parsed",
-            description: `Extracted content with ${data.images.length} image(s)`,
-          });
-        } else {
-          toast({
-            title: "Document parsed",
-            description: "Content extracted successfully. You can now edit it.",
-          });
-        }
-      }
-
-      // Clean up temp file
-      await supabase.storage
-        .from("article-images")
-        .remove([`documents/${fileName}`]);
-
-    } catch (error: any) {
-      console.error("Error parsing document:", error);
-      toast({
-        title: "Error parsing document",
-        description: error.message || "Failed to parse the document. Try a different format.",
-        variant: "destructive",
-      });
-    } finally {
-      setParsing(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-    }
-  };
-
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
@@ -194,7 +136,6 @@ const AdminArticle = () => {
 
       let thumbnailUrl = "";
 
-      // Upload thumbnail if provided
       if (thumbnail) {
         const fileExt = thumbnail.name.split(".").pop();
         const fileName = `${Math.random()}.${fileExt}`;
@@ -232,11 +173,6 @@ const AdminArticle = () => {
         description: "Article published successfully",
       });
 
-      setTitle("");
-      setContent("");
-      setAuthor("");
-      setThumbnail(null);
-      setThumbnailPreview("");
       navigate("/articles");
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -258,11 +194,6 @@ const AdminArticle = () => {
     }
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/auth");
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -276,148 +207,156 @@ const AdminArticle = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-gloock text-brand-primary">Admin - Create Article</h1>
-          <Button onClick={handleSignOut} variant="outline">
-            Sign Out
+    <div className="min-h-screen bg-[#1e1e1e] flex flex-col">
+      {/* Top Bar */}
+      <div className="bg-[#2d2d2d] border-b border-[#404040] px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => navigate("/articles")}
+            className="text-gray-300 hover:text-white hover:bg-[#404040]"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
           </Button>
+          <div className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-green-500" />
+            <span className="text-white font-medium">New Article</span>
+          </div>
+        </div>
+        <Button 
+          onClick={handleSubmit} 
+          disabled={submitting}
+          className="bg-green-600 hover:bg-green-700 text-white"
+        >
+          {submitting ? "Publishing..." : "Publish Article"}
+        </Button>
+      </div>
+
+      {/* Metadata Bar */}
+      <div className="bg-[#252526] border-b border-[#404040] px-4 py-3">
+        <div className="flex flex-wrap gap-4 items-end">
+          <div className="flex-1 min-w-[200px]">
+            <Label htmlFor="title" className="text-gray-400 text-xs mb-1 block">Title</Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Article title"
+              className="bg-[#1e1e1e] border-[#404040] text-white placeholder:text-gray-500"
+              required
+              maxLength={200}
+            />
+          </div>
+          <div className="w-48">
+            <Label htmlFor="author" className="text-gray-400 text-xs mb-1 block">Author</Label>
+            <Input
+              id="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              placeholder="Author name"
+              className="bg-[#1e1e1e] border-[#404040] text-white placeholder:text-gray-500"
+              required
+              maxLength={100}
+            />
+          </div>
+          <div className="w-64">
+            <Label htmlFor="thumbnail" className="text-gray-400 text-xs mb-1 block">Thumbnail</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="thumbnail"
+                type="file"
+                accept="image/*"
+                onChange={handleThumbnailChange}
+                className="bg-[#1e1e1e] border-[#404040] text-white text-xs"
+              />
+              {thumbnailPreview && (
+                <img 
+                  src={thumbnailPreview} 
+                  alt="Preview" 
+                  className="h-8 w-8 object-cover rounded"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Editor Area */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Editor Pane */}
+        <div className="w-1/2 flex flex-col border-r border-[#404040]">
+          <div className="bg-[#252526] px-4 py-2 border-b border-[#404040] flex items-center gap-2">
+            <Code className="h-4 w-4 text-gray-400" />
+            <span className="text-gray-300 text-sm font-medium">Source</span>
+            <span className="text-gray-500 text-xs">(Markdown + LaTeX)</span>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Write your article content..."
+              className="w-full h-full resize-none border-0 rounded-none bg-[#1e1e1e] text-gray-200 font-mono text-sm leading-relaxed p-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+              style={{ minHeight: '100%' }}
+            />
+          </div>
         </div>
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="font-gloock flex items-center gap-2">
-              <Upload className="h-5 w-5" />
-              Upload Document
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              Upload a PDF, Word document, or text file to extract content. 
-              Images and formulas will be preserved.
-            </p>
-            <Input
-              ref={fileInputRef}
-              type="file"
-              accept=".pdf,.doc,.docx,.txt,.md"
-              onChange={handleDocumentUpload}
-              disabled={parsing}
-            />
-            {parsing && (
-              <p className="text-sm text-brand-accent mt-2">Parsing document...</p>
-            )}
-          </CardContent>
-        </Card>
+        {/* Preview Pane */}
+        <div className="w-1/2 flex flex-col bg-white">
+          <div className="bg-gray-100 px-4 py-2 border-b border-gray-200 flex items-center gap-2">
+            <Eye className="h-4 w-4 text-gray-600" />
+            <span className="text-gray-700 text-sm font-medium">Preview</span>
+          </div>
+          <div className="flex-1 overflow-auto p-8">
+            <div className="max-w-3xl mx-auto prose prose-sm">
+              {content ? (
+                <ReactMarkdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                  components={{
+                    h1: ({ children }) => (
+                      <h1 className="text-3xl font-bold text-gray-900 mb-4">{children}</h1>
+                    ),
+                    h2: ({ children }) => (
+                      <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">{children}</h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3 className="text-xl font-medium text-gray-700 mt-6 mb-2">{children}</h3>
+                    ),
+                    p: ({ children }) => (
+                      <p className="text-gray-600 leading-relaxed mb-4">{children}</p>
+                    ),
+                    img: ({ src, alt }) => (
+                      <img
+                        src={src}
+                        alt={alt || ""}
+                        className="max-w-full h-auto rounded-lg my-4"
+                      />
+                    ),
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              ) : (
+                <p className="text-gray-400 italic">Start writing to see the preview...</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-gloock flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              New Scientific Article
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Article title"
-                  required
-                  maxLength={200}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="author">Author</Label>
-                <Input
-                  id="author"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="Author name"
-                  required
-                  maxLength={100}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="thumbnail">Article Thumbnail</Label>
-                <Input
-                  id="thumbnail"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleThumbnailChange}
-                />
-                {thumbnailPreview && (
-                  <div className="mt-2">
-                    <img 
-                      src={thumbnailPreview} 
-                      alt="Thumbnail preview" 
-                      className="max-w-xs rounded-lg"
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="content">Content (Markdown with LaTeX support)</Label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  Use $...$ for inline math and $$...$$ for block equations. 
-                  Example: $E = mc^2$ or $$\int_0^\infty e^{"{-x^2}"} dx = \frac{"{\\sqrt{\\pi}}{2}"}$$
-                </p>
-                
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList>
-                    <TabsTrigger value="write">Write</TabsTrigger>
-                    <TabsTrigger value="preview" className="flex items-center gap-1">
-                      <Eye className="h-4 w-4" />
-                      Preview
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="write">
-                    <Textarea
-                      id="content"
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                      placeholder="Write your article content in Markdown..."
-                      className="min-h-[400px] font-mono"
-                    />
-                  </TabsContent>
-                  <TabsContent value="preview">
-                    <div className="border rounded-md p-4 min-h-[400px] prose prose-sm max-w-none bg-white overflow-auto">
-                      {content ? (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkMath]}
-                          rehypePlugins={[rehypeKatex]}
-                          components={{
-                            img: ({ src, alt }) => (
-                              <img
-                                src={src}
-                                alt={alt || ""}
-                                className="max-w-full h-auto rounded-lg my-4"
-                              />
-                            ),
-                          }}
-                        >
-                          {content}
-                        </ReactMarkdown>
-                      ) : (
-                        <p className="text-muted-foreground">Nothing to preview yet...</p>
-                      )}
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-
-              <Button type="submit" disabled={submitting} className="w-full">
-                {submitting ? "Publishing..." : "Publish Article"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+      {/* Bottom Bar - Quick Reference */}
+      <div className="bg-[#252526] border-t border-[#404040] px-4 py-2">
+        <div className="flex items-center gap-6 text-xs text-gray-500">
+          <span><code className="bg-[#1e1e1e] px-1 rounded">$...$</code> inline math</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">$$...$$</code> block math</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded"># ## ###</code> headings</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">**bold**</code> <code className="bg-[#1e1e1e] px-1 rounded">*italic*</code></span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">\\frac&#123;a&#125;&#123;b&#125;</code> fractions</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">\\int \\sum \\sqrt</code> symbols</span>
+        </div>
       </div>
     </div>
   );
