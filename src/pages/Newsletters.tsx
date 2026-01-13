@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 
 interface Newsletter {
   id: string;
@@ -73,10 +73,20 @@ const Articles = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl font-gloock text-brand-primary mb-4 text-center">Newsletters</h1>
-        <p className="text-lg text-brand-text text-center mb-12">
-          Stay updated with our latest insights and announcements
-        </p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <div className="text-center md:text-left mb-4 md:mb-0">
+            <h1 className="text-5xl font-gloock text-brand-primary mb-4">Newsletters</h1>
+            <p className="text-lg text-brand-text">
+              Stay updated with our latest insights and announcements
+            </p>
+          </div>
+          {isAdmin && (
+            <Button onClick={() => navigate("/admin/newsletter")} className="self-center md:self-auto">
+              <Plus className="h-4 w-4 mr-2" />
+              New Publication
+            </Button>
+          )}
+        </div>
 
         {loading ? (
           <div className="text-center py-12">
