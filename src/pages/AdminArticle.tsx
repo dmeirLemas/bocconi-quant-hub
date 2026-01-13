@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
+import ArticleImageUploader from "@/components/ArticleImageUploader";
 
 const articleSchema = z.object({
   title: z.string().trim().min(1, { message: "Title is required" }).max(200),
@@ -64,8 +65,26 @@ const AdminArticle = () => {
   const [author, setAuthor] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
+  const [draftArticleId] = useState(() => crypto.randomUUID());
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const handleInsertImage = (markdown: string) => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const newContent = content.substring(0, start) + markdown + content.substring(end);
+      setContent(newContent);
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + markdown.length, start + markdown.length);
+      }, 0);
+    } else {
+      setContent(prev => prev + "\n" + markdown);
+    }
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -292,8 +311,13 @@ const AdminArticle = () => {
             <span className="text-gray-300 text-sm font-medium">Source</span>
             <span className="text-gray-500 text-xs">(Markdown + LaTeX)</span>
           </div>
+          <ArticleImageUploader 
+            articleId={draftArticleId} 
+            onInsert={handleInsertImage}
+          />
           <div className="flex-1 overflow-hidden">
             <Textarea
+              ref={textareaRef}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write your article content..."
