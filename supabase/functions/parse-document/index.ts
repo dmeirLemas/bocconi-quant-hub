@@ -1,7 +1,40 @@
+import { getDocument, GlobalWorkerOptions } from "npm:pdfjs-dist@4.0.379/legacy/build/pdf.mjs";
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Disable worker for server-side usage
+GlobalWorkerOptions.workerSrc = "";
+
+async function extractTextFromPDF(arrayBuffer: ArrayBuffer): Promise<string> {
+  try {
+    console.log('Loading PDF document...');
+    const loadingTask = getDocument({ data: new Uint8Array(arrayBuffer) });
+    const pdf = await loadingTask.promise;
+    
+    console.log('PDF loaded, pages:', pdf.numPages);
+    
+    let fullText = '';
+    
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      
+      const pageText = textContent.items
+        .map((item: any) => item.str)
+        .join(' ');
+      
+      fullText += pageText + '\n\n';
+    }
+    
+    return fullText.trim();
+  } catch (error) {
+    console.error('Error extracting text from PDF:', error);
+    throw new Error('Failed to extract text from PDF: ' + (error.message || error));
+  }
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -17,6 +50,8 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('Processing file:', fileName, 'Type:', fileType);
 
     // Fetch the file
     const fileResponse = await fetch(fileUrl);
@@ -39,13 +74,35 @@ Deno.serve(async (req) => {
         title = titleMatch[1];
       }
     } else if (fileType === 'application/pdf') {
-      // For PDF, we'll return a message that server-side PDF parsing requires additional setup
-      content = `# Document Uploaded\n\nThe PDF file "${fileName}" has been uploaded. Please copy and paste the content here, or use a PDF to text converter.\n\n**Note:** For automatic PDF parsing, consider using a document parsing service.`;
-      title = fileName.replace('.pdf', '');
+      console.log('Parsing PDF...');
+      
+      // Get the PDF as array buffer and extract text
+      const arrayBuffer = await fileResponse.arrayBuffer();
+      const extractedText = await extractTextFromPDF(arrayBuffer);
+      
+      if (extractedText && extractedText.length > 0) {
+        content = extractedText;
+        
+        // Try to extract title from first line or first heading
+        const lines = extractedText.split('\n').filter(line => line.trim());
+        if (lines.length > 0) {
+          title = lines[0].substring(0, 100).trim();
+        }
+      } else {
+        content = `# Document Uploaded\n\nThe PDF file "${fileName}" was uploaded but no text could be extracted. The PDF may be scanned or image-based.\n\nPlease copy and paste the content here manually.`;
+        title = fileName.replace('.pdf', '');
+      }
+      
+      console.log('PDF parsed successfully, extracted', content.length, 'characters');
     } else if (fileType.includes('word') || fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
-      // For Word docs, similar message
-      content = `# Document Uploaded\n\nThe Word document "${fileName}" has been uploaded. Please copy and paste the content here.\n\n**Note:** For automatic Word document parsing, consider using a document parsing service.`;
-      title = fileName.replace(/\.(docx?|doc)$/, '');
+      // For Word docs - we'll try to extract basic content from docx
+      if (fileName.endsWith('.docx')) {
+        content = `# Document Uploaded\n\nWord document "${fileName}" has been uploaded. For best results, please copy and paste the content manually or save as PDF first.\n\n**Tip:** You can also convert the document to plain text (.txt) for automatic parsing.`;
+        title = fileName.replace(/\.(docx?)$/, '');
+      } else {
+        content = `# Document Uploaded\n\nThe Word document "${fileName}" has been uploaded. Please copy and paste the content here.`;
+        title = fileName.replace(/\.(docx?|doc)$/, '');
+      }
     } else {
       // Unknown type
       content = `# Document Uploaded\n\nFile "${fileName}" uploaded. Please paste the content manually.`;
@@ -56,7 +113,7 @@ Deno.serve(async (req) => {
         content, 
         title,
         images,
-        message: 'Document processed. You can now edit the content.'
+        message: 'Document processed successfully.'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
