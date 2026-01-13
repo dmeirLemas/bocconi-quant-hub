@@ -13,6 +13,10 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AdminNewsletter from "./pages/AdminNewsletter";
 import AdminNewsletterEdit from "./pages/AdminNewsletterEdit";
+import AdminArticle from "./pages/AdminArticle";
+import AdminArticleEdit from "./pages/AdminArticleEdit";
+import Newsletters from "./pages/Newsletters";
+import NewsletterDetail from "./pages/NewsletterDetail";
 import Articles from "./pages/Articles";
 import ArticleDetail from "./pages/ArticleDetail";
 
@@ -34,6 +38,10 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin/newsletter" element={<AdminNewsletter />} />
               <Route path="/admin/newsletter/edit/:id" element={<AdminNewsletterEdit />} />
+              <Route path="/admin/article" element={<AdminArticle />} />
+              <Route path="/admin/article/edit/:id" element={<AdminArticleEdit />} />
+              <Route path="/newsletters" element={<Newsletters />} />
+              <Route path="/newsletters/:id" element={<NewsletterDetail />} />
               <Route path="/articles" element={<Articles />} />
               <Route path="/articles/:id" element={<ArticleDetail />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
