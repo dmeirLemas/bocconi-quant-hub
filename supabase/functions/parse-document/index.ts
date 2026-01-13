@@ -1,18 +1,14 @@
-import { getDocument, GlobalWorkerOptions } from "npm:pdfjs-dist@4.0.379/legacy/build/pdf.mjs";
+import { getDocumentProxy } from "npm:unpdf";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Disable worker for server-side usage
-GlobalWorkerOptions.workerSrc = "";
-
 async function extractTextFromPDF(arrayBuffer: ArrayBuffer): Promise<string> {
   try {
-    console.log('Loading PDF document...');
-    const loadingTask = getDocument({ data: new Uint8Array(arrayBuffer) });
-    const pdf = await loadingTask.promise;
+    console.log('Loading PDF with unpdf...');
+    const pdf = await getDocumentProxy(new Uint8Array(arrayBuffer));
     
     console.log('PDF loaded, pages:', pdf.numPages);
     
@@ -95,14 +91,8 @@ Deno.serve(async (req) => {
       
       console.log('PDF parsed successfully, extracted', content.length, 'characters');
     } else if (fileType.includes('word') || fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
-      // For Word docs - we'll try to extract basic content from docx
-      if (fileName.endsWith('.docx')) {
-        content = `# Document Uploaded\n\nWord document "${fileName}" has been uploaded. For best results, please copy and paste the content manually or save as PDF first.\n\n**Tip:** You can also convert the document to plain text (.txt) for automatic parsing.`;
-        title = fileName.replace(/\.(docx?)$/, '');
-      } else {
-        content = `# Document Uploaded\n\nThe Word document "${fileName}" has been uploaded. Please copy and paste the content here.`;
-        title = fileName.replace(/\.(docx?|doc)$/, '');
-      }
+      content = `# Document Uploaded\n\nWord document "${fileName}" has been uploaded. For best results, please save as PDF first and upload the PDF.\n\n**Tip:** You can also convert the document to plain text (.txt) for automatic parsing.`;
+      title = fileName.replace(/\.(docx?|doc)$/, '');
     } else {
       // Unknown type
       content = `# Document Uploaded\n\nFile "${fileName}" uploaded. Please paste the content manually.`;
