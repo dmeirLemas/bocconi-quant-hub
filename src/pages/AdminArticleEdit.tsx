@@ -1,19 +1,28 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { FileText, Eye, ArrowLeft } from "lucide-react";
+import { FileText, Eye, Code, ArrowLeft, Trash2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const articleSchema = z.object({
   title: z.string().trim().min(1, { message: "Title is required" }).max(200),
@@ -23,17 +32,16 @@ const articleSchema = z.object({
 
 const AdminArticleEdit = () => {
   const { id } = useParams();
-  const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
   const [existingThumbnail, setExistingThumbnail] = useState<string>("");
-  const [activeTab, setActiveTab] = useState("write");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -45,8 +53,6 @@ const AdminArticleEdit = () => {
         navigate("/auth");
         return;
       }
-
-      setUser(session.user);
 
       const { data: roleData } = await supabase
         .from("user_roles")
@@ -67,7 +73,6 @@ const AdminArticleEdit = () => {
 
       setIsAdmin(true);
 
-      // Fetch article data
       const { data: article, error } = await supabase
         .from("articles")
         .select("*")
@@ -134,7 +139,6 @@ const AdminArticleEdit = () => {
 
       let thumbnailUrl = existingThumbnail;
 
-      // Upload new thumbnail if provided
       if (thumbnail) {
         const fileExt = thumbnail.name.split(".").pop();
         const fileName = `${Math.random()}.${fileExt}`;
@@ -194,15 +198,38 @@ const AdminArticleEdit = () => {
     }
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/auth");
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      const { error } = await supabase
+        .from("articles")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Article deleted successfully",
+      });
+
+      navigate("/articles");
+    } catch (error) {
+      console.error("Error deleting:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete article",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(false);
+    }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-brand-text">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#1e1e1e]">
+        <p className="text-gray-400">Loading...</p>
       </div>
     );
   }
@@ -212,128 +239,188 @@ const AdminArticleEdit = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate("/articles")}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-4xl font-gloock text-brand-primary">Edit Article</h1>
+    <div className="min-h-screen bg-[#1e1e1e] flex flex-col">
+      {/* Top Bar */}
+      <div className="bg-[#2d2d2d] border-b border-[#404040] px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => navigate("/articles")}
+            className="text-gray-300 hover:text-white hover:bg-[#404040]"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <div className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-500" />
+            <span className="text-white font-medium">Edit Article</span>
           </div>
-          <Button onClick={handleSignOut} variant="outline">
-            Sign Out
+        </div>
+        <div className="flex items-center gap-2">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button 
+                variant="ghost"
+                size="sm"
+                className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Article</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete this article? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={handleDelete}
+                  className="bg-red-600 hover:bg-red-700"
+                  disabled={deleting}
+                >
+                  {deleting ? "Deleting..." : "Delete"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <Button 
+            onClick={handleSubmit} 
+            disabled={submitting}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {submitting ? "Saving..." : "Save Changes"}
           </Button>
         </div>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-gloock flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Edit Scientific Article
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Article title"
-                  required
-                  maxLength={200}
+      {/* Metadata Bar */}
+      <div className="bg-[#252526] border-b border-[#404040] px-4 py-3">
+        <div className="flex flex-wrap gap-4 items-end">
+          <div className="flex-1 min-w-[200px]">
+            <Label htmlFor="title" className="text-gray-400 text-xs mb-1 block">Title</Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Article title"
+              className="bg-[#1e1e1e] border-[#404040] text-white placeholder:text-gray-500"
+              required
+              maxLength={200}
+            />
+          </div>
+          <div className="w-48">
+            <Label htmlFor="author" className="text-gray-400 text-xs mb-1 block">Author</Label>
+            <Input
+              id="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              placeholder="Author name"
+              className="bg-[#1e1e1e] border-[#404040] text-white placeholder:text-gray-500"
+              required
+              maxLength={100}
+            />
+          </div>
+          <div className="w-64">
+            <Label htmlFor="thumbnail" className="text-gray-400 text-xs mb-1 block">Thumbnail</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="thumbnail"
+                type="file"
+                accept="image/*"
+                onChange={handleThumbnailChange}
+                className="bg-[#1e1e1e] border-[#404040] text-white text-xs"
+              />
+              {thumbnailPreview && (
+                <img 
+                  src={thumbnailPreview} 
+                  alt="Preview" 
+                  className="h-8 w-8 object-cover rounded"
                 />
-              </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="author">Author</Label>
-                <Input
-                  id="author"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="Author name"
-                  required
-                  maxLength={100}
-                />
-              </div>
+      {/* Main Editor Area */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Editor Pane */}
+        <div className="w-1/2 flex flex-col border-r border-[#404040]">
+          <div className="bg-[#252526] px-4 py-2 border-b border-[#404040] flex items-center gap-2">
+            <Code className="h-4 w-4 text-gray-400" />
+            <span className="text-gray-300 text-sm font-medium">Source</span>
+            <span className="text-gray-500 text-xs">(Markdown + LaTeX)</span>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Write your article content..."
+              className="w-full h-full resize-none border-0 rounded-none bg-[#1e1e1e] text-gray-200 font-mono text-sm leading-relaxed p-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+              style={{ minHeight: '100%' }}
+            />
+          </div>
+        </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="thumbnail">Article Thumbnail</Label>
-                <Input
-                  id="thumbnail"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleThumbnailChange}
-                />
-                {thumbnailPreview && (
-                  <div className="mt-2">
-                    <img 
-                      src={thumbnailPreview} 
-                      alt="Thumbnail preview" 
-                      className="max-w-xs rounded-lg"
-                    />
-                  </div>
-                )}
-              </div>
+        {/* Preview Pane */}
+        <div className="w-1/2 flex flex-col bg-white">
+          <div className="bg-gray-100 px-4 py-2 border-b border-gray-200 flex items-center gap-2">
+            <Eye className="h-4 w-4 text-gray-600" />
+            <span className="text-gray-700 text-sm font-medium">Preview</span>
+          </div>
+          <div className="flex-1 overflow-auto p-8">
+            <div className="max-w-3xl mx-auto prose prose-sm">
+              {content ? (
+                <ReactMarkdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                  components={{
+                    h1: ({ children }) => (
+                      <h1 className="text-3xl font-bold text-gray-900 mb-4">{children}</h1>
+                    ),
+                    h2: ({ children }) => (
+                      <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">{children}</h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3 className="text-xl font-medium text-gray-700 mt-6 mb-2">{children}</h3>
+                    ),
+                    p: ({ children }) => (
+                      <p className="text-gray-600 leading-relaxed mb-4">{children}</p>
+                    ),
+                    img: ({ src, alt }) => (
+                      <img
+                        src={src}
+                        alt={alt || ""}
+                        className="max-w-full h-auto rounded-lg my-4"
+                      />
+                    ),
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              ) : (
+                <p className="text-gray-400 italic">Start writing to see the preview...</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="content">Content (Markdown with LaTeX support)</Label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  Use $...$ for inline math and $$...$$ for block equations. 
-                  Example: $E = mc^2$ or $$\int_0^\infty e^{"{-x^2}"} dx = \frac{"{\\sqrt{\\pi}}{2}"}$$
-                </p>
-                
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList>
-                    <TabsTrigger value="write">Write</TabsTrigger>
-                    <TabsTrigger value="preview" className="flex items-center gap-1">
-                      <Eye className="h-4 w-4" />
-                      Preview
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="write">
-                    <Textarea
-                      id="content"
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                      placeholder="Write your article content in Markdown..."
-                      className="min-h-[400px] font-mono"
-                    />
-                  </TabsContent>
-                  <TabsContent value="preview">
-                    <div className="border rounded-md p-4 min-h-[400px] prose prose-sm max-w-none bg-white overflow-auto">
-                      {content ? (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkMath]}
-                          rehypePlugins={[rehypeKatex]}
-                          components={{
-                            img: ({ src, alt }) => (
-                              <img
-                                src={src}
-                                alt={alt || ""}
-                                className="max-w-full h-auto rounded-lg my-4"
-                              />
-                            ),
-                          }}
-                        >
-                          {content}
-                        </ReactMarkdown>
-                      ) : (
-                        <p className="text-muted-foreground">Nothing to preview yet...</p>
-                      )}
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-
-              <Button type="submit" disabled={submitting} className="w-full">
-                {submitting ? "Updating..." : "Update Article"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+      {/* Bottom Bar - Quick Reference */}
+      <div className="bg-[#252526] border-t border-[#404040] px-4 py-2">
+        <div className="flex items-center gap-6 text-xs text-gray-500">
+          <span><code className="bg-[#1e1e1e] px-1 rounded">$...$</code> inline math</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">$$...$$</code> block math</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded"># ## ###</code> headings</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">**bold**</code> <code className="bg-[#1e1e1e] px-1 rounded">*italic*</code></span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">\\frac&#123;a&#125;&#123;b&#125;</code> fractions</span>
+          <span><code className="bg-[#1e1e1e] px-1 rounded">\\int \\sum \\sqrt</code> symbols</span>
+        </div>
       </div>
     </div>
   );
