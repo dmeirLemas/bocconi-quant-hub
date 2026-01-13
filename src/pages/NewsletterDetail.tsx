@@ -1,0 +1,194 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Trash2, ArrowLeft } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+interface Newsletter {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  published_date: string;
+}
+
+const NewsletterDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [newsletter, setNewsletter] = useState<Newsletter | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+        
+        setIsAdmin(!!roleData);
+      }
+    };
+
+    const fetchNewsletter = async () => {
+      if (!id) return;
+      
+      const { data, error } = await supabase
+        .from("newsletters")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error fetching newsletter:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load newsletter",
+          variant: "destructive",
+        });
+      } else if (!data) {
+        toast({
+          title: "Not Found",
+          description: "Newsletter not found",
+          variant: "destructive",
+        });
+        navigate("/newsletters");
+      } else {
+        setNewsletter(data);
+      }
+      setLoading(false);
+    };
+
+    checkAdmin();
+    fetchNewsletter();
+  }, [id, navigate, toast]);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  };
+
+  const handleDelete = async () => {
+    if (!id) return;
+
+    const { error } = await supabase
+      .from("newsletters")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete newsletter",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Newsletter deleted successfully",
+      });
+      navigate("/newsletters");
+    }
+    setDeleteDialogOpen(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-brand-text text-center">Loading newsletter...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!newsletter) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/newsletters")}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Newsletters
+        </Button>
+
+        <Card className="border border-border">
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <CardTitle className="text-4xl font-gloock text-brand-primary mb-4">
+                  {newsletter.title}
+                </CardTitle>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span>By {newsletter.author}</span>
+                  <Separator orientation="vertical" className="h-4" />
+                  <span>{formatDate(newsletter.published_date)}</span>
+                </div>
+              </div>
+              {isAdmin && (
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => setDeleteDialogOpen(true)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div 
+              className="prose prose-lg max-w-none text-brand-text"
+              dangerouslySetInnerHTML={{ __html: newsletter.content }}
+            />
+          </CardContent>
+        </Card>
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Newsletter</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this newsletter? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
+  );
+};
+
+export default NewsletterDetail;

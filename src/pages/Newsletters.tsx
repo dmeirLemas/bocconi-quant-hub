@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 
-interface Article {
+interface Newsletter {
   id: string;
   title: string;
   content: string;
@@ -17,7 +17,7 @@ interface Article {
 
 const Articles = () => {
   const navigate = useNavigate();
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -38,16 +38,16 @@ const Articles = () => {
         }
       }
 
-      // Fetch articles
+      // Fetch newsletters
       const { data, error } = await supabase
-        .from("articles")
+        .from("newsletters")
         .select("*")
         .order("published_date", { ascending: false });
 
       if (error) {
         console.error("Error fetching articles:", error);
       } else {
-        setArticles(data || []);
+        setNewsletters(data || []);
       }
       setLoading(false);
     };
@@ -64,27 +64,25 @@ const Articles = () => {
   };
 
   const getPreview = (content: string) => {
-    // Remove LaTeX and HTML for preview
-    const text = content
-      .replace(/\$\$[\s\S]*?\$\$/g, '') // Remove block math
-      .replace(/\$[^$]*\$/g, '') // Remove inline math
-      .replace(/<[^>]*>/g, ''); // Remove HTML
+    const div = document.createElement("div");
+    div.innerHTML = content;
+    const text = div.textContent || div.innerText || "";
     return text.substring(0, 150) + (text.length > 150 ? "..." : "");
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl font-gloock text-brand-primary mb-4 text-center">Scientific Articles</h1>
+        <h1 className="text-5xl font-gloock text-brand-primary mb-4 text-center">Newsletters</h1>
         <p className="text-lg text-brand-text text-center mb-12">
-          Research papers and scientific publications from our members
+          Stay updated with our latest insights and announcements
         </p>
 
         {loading ? (
           <div className="text-center py-12">
             <p className="text-brand-text">Loading articles...</p>
           </div>
-        ) : articles.length === 0 ? (
+        ) : newsletters.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
               <p className="text-brand-text">No articles published yet. Check back soon!</p>
@@ -92,41 +90,41 @@ const Articles = () => {
           </Card>
         ) : (
           <div className="space-y-6">
-            {articles.map((article) => (
+            {newsletters.map((newsletter) => (
               <Card 
-                key={article.id} 
+                key={newsletter.id} 
                 className="border-none hover:shadow-lg transition-shadow overflow-hidden"
               >
                 <div className="flex flex-col md:flex-row gap-6">
-                  {article.thumbnail_url && (
+                  {newsletter.thumbnail_url && (
                     <div 
                       className="w-full h-48 md:w-48 md:h-48 flex-shrink-0 cursor-pointer"
-                      onClick={() => navigate(`/articles/${article.id}`)}
+                      onClick={() => navigate(`/newsletters/${newsletter.id}`)}
                     >
                       <img 
-                        src={article.thumbnail_url} 
-                        alt={article.title}
+                        src={newsletter.thumbnail_url} 
+                        alt={newsletter.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
                   )}
                   <div 
                     className="flex-1 cursor-pointer"
-                    onClick={() => navigate(`/articles/${article.id}`)}
+                    onClick={() => navigate(`/newsletters/${newsletter.id}`)}
                   >
                     <CardHeader>
                       <CardTitle className="text-3xl font-gloock text-brand-primary mb-3">
-                        {article.title}
+                        {newsletter.title}
                       </CardTitle>
                       <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                        <span>{article.author}</span>
+                        <span>{newsletter.author}</span>
                         <Separator orientation="vertical" className="h-4" />
-                        <span>{formatDate(article.published_date)}</span>
+                        <span>{formatDate(newsletter.published_date)}</span>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-brand-text line-clamp-3">
-                        {getPreview(article.content)}
+                        {getPreview(newsletter.content)}
                       </p>
                     </CardContent>
                   </div>
@@ -137,7 +135,7 @@ const Articles = () => {
                         size="icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/admin/article/edit/${article.id}`);
+                          navigate(`/admin/newsletter/edit/${newsletter.id}`);
                         }}
                       >
                         <Pencil className="h-4 w-4" />
