@@ -1,11 +1,31 @@
-
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, LogIn, LogOut } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -54,6 +74,25 @@ const Header = () => {
         >
           Apply
         </a>
+        {user ? (
+          <Button
+            variant="ghost"
+            onClick={handleSignOut}
+            className="text-brand-secondary hover:bg-brand-accent hover:text-white"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/auth')}
+            className="text-brand-secondary hover:bg-brand-accent hover:text-white"
+          >
+            <LogIn className="h-4 w-4 mr-2" />
+            Login
+          </Button>
+        )}
         </div>
 
         {/* Mobile menu button */}
@@ -94,6 +133,25 @@ const Header = () => {
           >
             Apply
           </a>
+          {user ? (
+            <button
+              onClick={() => {
+                handleSignOut();
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left px-3 py-2 rounded-md text-lg font-medium font-gowun text-brand-secondary hover:bg-brand-primary hover:text-white transition-colors duration-200"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="block px-3 py-2 rounded-md text-lg font-medium font-gowun text-brand-secondary hover:bg-brand-primary hover:text-white transition-colors duration-200"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Login
+            </Link>
+          )}
         </div>
         </div>
       )}
