@@ -19,6 +19,7 @@ import Newsletters from "./pages/Newsletters";
 import NewsletterDetail from "./pages/NewsletterDetail";
 import Articles from "./pages/Articles";
 import ArticleDetail from "./pages/ArticleDetail";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/apply" element={<Application />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/admin/newsletter" element={<AdminNewsletter />} />
               <Route path="/admin/newsletter/edit/:id" element={<AdminNewsletterEdit />} />
               <Route path="/admin/article" element={<AdminArticle />} />
