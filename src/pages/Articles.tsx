@@ -137,7 +137,8 @@ const Articles = () => {
             {filteredArticles.map((article) => (
               <Card 
                 key={article.id} 
-                className="border-none hover:shadow-lg transition-shadow overflow-hidden"
+                className="border-none hover:shadow-lg transition-shadow overflow-hidden cursor-pointer"
+                onClick={() => navigate(`/articles/${article.id}`)}
               >
                 <div className="flex flex-col md:flex-row gap-6">
                   {article.thumbnail_url && (
@@ -169,27 +170,19 @@ const Articles = () => {
                       <p className="text-brand-text line-clamp-3 mb-4">
                         {article.content}
                       </p>
-                      <div className="flex items-center gap-2">
-                        {article.file_url && (
-                          <Button 
-                            size="sm"
-                            onClick={() => handleDownload(article.file_url!, article.title)}
-                          >
-                            <Download className="h-4 w-4 mr-2" />
-                            Full Article
-                          </Button>
-                        )}
-                        {isAdmin && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => navigate(`/admin/article/edit/${article.id}`)}
-                          >
-                            <Pencil className="h-4 w-4 mr-2" />
-                            Edit
-                          </Button>
-                        )}
-                      </div>
+                      {isAdmin && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/admin/article/edit/${article.id}`);
+                          }}
+                        >
+                          <Pencil className="h-4 w-4 mr-2" />
+                          Edit
+                        </Button>
+                      )}
                     </CardContent>
                   </div>
                 </div>
