@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowLeft, Trash2, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -16,10 +16,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import ReactMarkdown from "react-markdown";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-import "katex/dist/katex.min.css";
 
 interface Article {
   id: string;
@@ -28,6 +24,8 @@ interface Article {
   author: string;
   published_date: string;
   thumbnail_url: string | null;
+  category: string;
+  file_url: string | null;
 }
 
 const ArticleDetail = () => {
@@ -163,6 +161,12 @@ const ArticleDetail = () => {
           />
         )}
 
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm font-medium px-3 py-1 bg-brand-accent/10 text-brand-accent rounded">
+            {article.category}
+          </span>
+        </div>
+
         <h1 className="text-4xl md:text-5xl font-gloock text-brand-primary mb-4">
           {article.title}
         </h1>
@@ -173,23 +177,27 @@ const ArticleDetail = () => {
           <span>{formatDate(article.published_date)}</span>
         </div>
 
-        <div className="prose prose-lg max-w-none article-content">
-          <ReactMarkdown
-            remarkPlugins={[remarkMath]}
-            rehypePlugins={[rehypeKatex]}
-            components={{
-              img: ({ src, alt }) => (
-                <img
-                  src={src}
-                  alt={alt || ""}
-                  className="max-w-full h-auto rounded-lg my-4"
-                />
-              ),
+        <div className="prose prose-lg max-w-none article-content mb-8">
+          <p className="text-brand-text whitespace-pre-wrap">{article.content}</p>
+        </div>
+
+        {article.file_url && (
+          <Button 
+            size="lg"
+            onClick={() => {
+              const link = document.createElement('a');
+              link.href = article.file_url!;
+              link.download = `${article.title}.pdf`;
+              link.target = '_blank';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
             }}
           >
-            {article.content}
-          </ReactMarkdown>
-        </div>
+            <Download className="h-4 w-4 mr-2" />
+            Download Full Article
+          </Button>
+        )}
       </div>
     </div>
   );
