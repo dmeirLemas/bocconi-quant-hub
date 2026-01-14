@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,84 +7,42 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { FileText, Eye, Code, ArrowLeft } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-import "katex/dist/katex.min.css";
-import ArticleImageUploader from "@/components/ArticleImageUploader";
+import { ArrowLeft, Upload, FileText } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const CATEGORIES = [
+  "AI/ML",
+  "Quantitative Research",
+  "Capital Markets", 
+  "Portfolio Management"
+] as const;
 
 const articleSchema = z.object({
   title: z.string().trim().min(1, { message: "Title is required" }).max(200),
-  content: z.string().trim().min(1, { message: "Content is required" }),
-  author: z.string().trim().min(1, { message: "Author is required" }).max(100)
+  summary: z.string().trim().min(1, { message: "Summary is required" }).max(1000),
+  author: z.string().trim().min(1, { message: "Author is required" }).max(100),
+  category: z.enum(CATEGORIES, { message: "Category is required" })
 });
-
-const LATEX_TEMPLATE = `# Introduction
-
-Write your introduction here. You can use **bold**, *italic*, and other Markdown formatting.
-
-## Mathematical Equations
-
-Inline equations use single dollar signs: $E = mc^2$
-
-Block equations use double dollar signs:
-
-$$
-\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}
-$$
-
-### More Examples
-
-The quadratic formula:
-$$
-x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}
-$$
-
-Euler's identity: $e^{i\\pi} + 1 = 0$
-
-## Methodology
-
-Describe your methodology here...
-
-## Results
-
-Present your findings...
-
-## Conclusion
-
-Summarize your conclusions...
-`;
 
 const AdminArticle = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(LATEX_TEMPLATE);
+  const [summary, setSummary] = useState("");
   const [author, setAuthor] = useState("");
+  const [category, setCategory] = useState<string>("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
-  const [draftArticleId] = useState(() => crypto.randomUUID());
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  const handleInsertImage = (markdown: string) => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const newContent = content.substring(0, start) + markdown + content.substring(end);
-      setContent(newContent);
-      setTimeout(() => {
-        textarea.focus();
-        textarea.setSelectionRange(start + markdown.length, start + markdown.length);
-      }, 0);
-    } else {
-      setContent(prev => prev + "\n" + markdown);
-    }
-  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -139,6 +97,19 @@ const AdminArticle = () => {
     }
   };
 
+  const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === "application/pdf") {
+      setPdfFile(file);
+    } else {
+      toast({
+        title: "Invalid File",
+        description: "Please upload a PDF file",
+        variant: "destructive",
+      });
+    }
+  };
+
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
@@ -149,15 +120,26 @@ const AdminArticle = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!pdfFile) {
+      toast({
+        title: "Missing PDF",
+        description: "Please upload the research paper PDF",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const validated = articleSchema.parse({ title, content, author });
+      const validated = articleSchema.parse({ title, summary, author, category });
       setSubmitting(true);
 
       let thumbnailUrl = "";
+      let fileUrl = "";
 
+      // Upload thumbnail
       if (thumbnail) {
         const fileExt = thumbnail.name.split(".").pop();
-        const fileName = `${Math.random()}.${fileExt}`;
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
         const filePath = `thumbnails/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
@@ -173,23 +155,41 @@ const AdminArticle = () => {
         thumbnailUrl = publicUrl;
       }
 
+      // Upload PDF
+      const pdfFileName = `${crypto.randomUUID()}.pdf`;
+      const pdfFilePath = `papers/${pdfFileName}`;
+
+      const { error: pdfUploadError } = await supabase.storage
+        .from("article-images")
+        .upload(pdfFilePath, pdfFile);
+
+      if (pdfUploadError) throw pdfUploadError;
+
+      const { data: { publicUrl: pdfPublicUrl } } = supabase.storage
+        .from("article-images")
+        .getPublicUrl(pdfFilePath);
+
+      fileUrl = pdfPublicUrl;
+
       const slug = generateSlug(validated.title);
 
       const { error } = await supabase
         .from("articles")
         .insert([{
           title: validated.title,
-          content: validated.content,
+          content: validated.summary, // Using content field for summary
           author: validated.author,
+          category: validated.category,
           slug: slug,
           thumbnail_url: thumbnailUrl || null,
+          file_url: fileUrl,
         }]);
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Article published successfully",
+        description: "Research paper uploaded successfully",
       });
 
       navigate("/articles");
@@ -204,7 +204,7 @@ const AdminArticle = () => {
         console.error("Error publishing:", error);
         toast({
           title: "Error",
-          description: "Failed to publish article",
+          description: "Failed to upload research paper",
           variant: "destructive",
         });
       }
@@ -226,160 +226,135 @@ const AdminArticle = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#1e1e1e] flex flex-col">
-      {/* Top Bar */}
-      <div className="bg-[#2d2d2d] border-b border-[#404040] px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => navigate("/articles")}
-            className="text-gray-300 hover:text-white hover:bg-[#404040]"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-          <div className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-green-500" />
-            <span className="text-white font-medium">New Article</span>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-brand-light via-white to-brand-light py-16 px-4">
+      <div className="max-w-2xl mx-auto">
         <Button 
-          onClick={handleSubmit} 
-          disabled={submitting}
-          className="bg-green-600 hover:bg-green-700 text-white"
+          variant="ghost" 
+          onClick={() => navigate("/articles")}
+          className="mb-6"
         >
-          {submitting ? "Publishing..." : "Publish Article"}
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Research Papers
         </Button>
-      </div>
 
-      {/* Metadata Bar */}
-      <div className="bg-[#252526] border-b border-[#404040] px-4 py-3">
-        <div className="flex flex-wrap gap-4 items-end">
-          <div className="flex-1 min-w-[200px]">
-            <Label htmlFor="title" className="text-gray-400 text-xs mb-1 block">Title</Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Article title"
-              className="bg-[#1e1e1e] border-[#404040] text-white placeholder:text-gray-500"
-              required
-              maxLength={200}
-            />
-          </div>
-          <div className="w-48">
-            <Label htmlFor="author" className="text-gray-400 text-xs mb-1 block">Author</Label>
-            <Input
-              id="author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="Author name"
-              className="bg-[#1e1e1e] border-[#404040] text-white placeholder:text-gray-500"
-              required
-              maxLength={100}
-            />
-          </div>
-          <div className="w-64">
-            <Label htmlFor="thumbnail" className="text-gray-400 text-xs mb-1 block">Thumbnail</Label>
-            <div className="flex items-center gap-2">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h1 className="text-3xl font-gloock text-brand-primary mb-6">Upload Research Paper</h1>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <Label htmlFor="title">Title *</Label>
               <Input
-                id="thumbnail"
-                type="file"
-                accept="image/*"
-                onChange={handleThumbnailChange}
-                className="bg-[#1e1e1e] border-[#404040] text-white text-xs"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Research paper title"
+                required
+                maxLength={200}
               />
-              {thumbnailPreview && (
-                <img 
-                  src={thumbnailPreview} 
-                  alt="Preview" 
-                  className="h-8 w-8 object-cover rounded"
+            </div>
+
+            <div>
+              <Label htmlFor="author">Author(s) *</Label>
+              <Input
+                id="author"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+                placeholder="Author name(s)"
+                required
+                maxLength={100}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="category">Division *</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a division" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="summary">Summary *</Label>
+              <Textarea
+                id="summary"
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                placeholder="Brief summary of the research paper (max 1000 characters)"
+                required
+                maxLength={1000}
+                rows={4}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                {summary.length}/1000 characters
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="thumbnail">Thumbnail Image</Label>
+              <div className="flex items-center gap-4 mt-2">
+                <Input
+                  id="thumbnail"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleThumbnailChange}
+                  className="flex-1"
                 />
-              )}
+                {thumbnailPreview && (
+                  <img 
+                    src={thumbnailPreview} 
+                    alt="Preview" 
+                    className="h-16 w-16 object-cover rounded"
+                  />
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Main Editor Area */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Editor Pane */}
-        <div className="w-1/2 flex flex-col border-r border-[#404040]">
-          <div className="bg-[#252526] px-4 py-2 border-b border-[#404040] flex items-center gap-2">
-            <Code className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-300 text-sm font-medium">Source</span>
-            <span className="text-gray-500 text-xs">(Markdown + LaTeX)</span>
-          </div>
-          <ArticleImageUploader 
-            articleId={draftArticleId} 
-            onInsert={handleInsertImage}
-          />
-          <div className="flex-1 overflow-hidden">
-            <Textarea
-              ref={textareaRef}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Write your article content..."
-              className="w-full h-full resize-none border-0 rounded-none bg-[#1e1e1e] text-gray-200 font-mono text-sm leading-relaxed p-4 focus-visible:ring-0 focus-visible:ring-offset-0"
-              style={{ minHeight: '100%' }}
-            />
-          </div>
-        </div>
-
-        {/* Preview Pane */}
-        <div className="w-1/2 flex flex-col bg-white">
-          <div className="bg-gray-100 px-4 py-2 border-b border-gray-200 flex items-center gap-2">
-            <Eye className="h-4 w-4 text-gray-600" />
-            <span className="text-gray-700 text-sm font-medium">Preview</span>
-          </div>
-          <div className="flex-1 overflow-auto p-8">
-            <div className="max-w-3xl mx-auto prose prose-sm">
-              {content ? (
-                <ReactMarkdown
-                  remarkPlugins={[remarkMath]}
-                  rehypePlugins={[rehypeKatex]}
-                  components={{
-                    h1: ({ children }) => (
-                      <h1 className="text-3xl font-bold text-gray-900 mb-4">{children}</h1>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">{children}</h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 className="text-xl font-medium text-gray-700 mt-6 mb-2">{children}</h3>
-                    ),
-                    p: ({ children }) => (
-                      <p className="text-gray-600 leading-relaxed mb-4">{children}</p>
-                    ),
-                    img: ({ src, alt }) => (
-                      <img
-                        src={src}
-                        alt={alt || ""}
-                        className="max-w-full h-auto rounded-lg my-4"
-                      />
-                    ),
-                  }}
+            <div>
+              <Label htmlFor="pdf">Research Paper PDF *</Label>
+              <div className="mt-2 border-2 border-dashed border-gray-200 rounded-lg p-6 text-center">
+                <input
+                  id="pdf"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handlePdfChange}
+                  className="hidden"
+                />
+                <label 
+                  htmlFor="pdf" 
+                  className="cursor-pointer flex flex-col items-center"
                 >
-                  {content}
-                </ReactMarkdown>
-              ) : (
-                <p className="text-gray-400 italic">Start writing to see the preview...</p>
-              )}
+                  {pdfFile ? (
+                    <>
+                      <FileText className="h-12 w-12 text-green-500 mb-2" />
+                      <p className="text-sm font-medium text-brand-text">{pdfFile.name}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Click to change file</p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-12 w-12 text-gray-400 mb-2" />
+                      <p className="text-sm text-muted-foreground">Click to upload PDF</p>
+                    </>
+                  )}
+                </label>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Bottom Bar - Quick Reference */}
-      <div className="bg-[#252526] border-t border-[#404040] px-4 py-2">
-        <div className="flex items-center gap-6 text-xs text-gray-500">
-          <span><code className="bg-[#1e1e1e] px-1 rounded">$...$</code> inline math</span>
-          <span><code className="bg-[#1e1e1e] px-1 rounded">$$...$$</code> block math</span>
-          <span><code className="bg-[#1e1e1e] px-1 rounded"># ## ###</code> headings</span>
-          <span><code className="bg-[#1e1e1e] px-1 rounded">**bold**</code> <code className="bg-[#1e1e1e] px-1 rounded">*italic*</code></span>
-          <span><code className="bg-[#1e1e1e] px-1 rounded">\\frac&#123;a&#125;&#123;b&#125;</code> fractions</span>
-          <span><code className="bg-[#1e1e1e] px-1 rounded">\\int \\sum \\sqrt</code> symbols</span>
+            <Button 
+              type="submit" 
+              disabled={submitting}
+              className="w-full"
+            >
+              {submitting ? "Uploading..." : "Upload Paper"}
+            </Button>
+          </form>
         </div>
       </div>
     </div>
